@@ -66,6 +66,7 @@ public class HomeController {
         String info = "not found";
         if (authObj instanceof OAuth2Authentication) {
             OAuth2Authentication a = (OAuth2Authentication) authObj;
+            
             if (a != null) {
                 info = a.getName() + " xxxxx";
                 loggedIn = true;
