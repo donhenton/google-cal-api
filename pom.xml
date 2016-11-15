@@ -45,7 +45,7 @@
             <optional>true</optional>
         </dependency>
         
-         <dependency>
+        <dependency>
             <groupId>org.webjars.npm</groupId>
             <artifactId>jquery</artifactId>
             <version>2.2.1</version>
@@ -56,17 +56,28 @@
             <artifactId>jquery-ui</artifactId>
             <version>1.11.4</version>
         </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.3-1100-jdbc41</version>
-            <type>jar</type>
-        </dependency>
+         
         <dependency>
             <groupId>com.dhenton9000.webjars</groupId>
             <artifactId>webjar-app</artifactId>
             <version>1.0-SNAPSHOT</version>
-         </dependency>
+        </dependency>
+       
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-calendar</artifactId>
+            <version>v3-rev224-1.22.0</version>
+        </dependency>
+        
     </dependencies>
     <build>
         <plugins>

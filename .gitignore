@@ -22,4 +22,5 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+/src/main/resources/credentials/
 /src/main/resources/application-dev.properties
