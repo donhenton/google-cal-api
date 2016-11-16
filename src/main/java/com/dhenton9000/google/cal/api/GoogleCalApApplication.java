@@ -50,21 +50,17 @@ public class GoogleCalApApplication extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
          
-        http.antMatcher("/**").authorizeRequests().antMatchers( "/login**", "/webjars/**").permitAll().anyRequest()
+        http.antMatcher("/**").authorizeRequests().antMatchers( "/login**","/logout**", "/webjars/**").permitAll().anyRequest()
                 .authenticated().and().exceptionHandling()
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login/google")) 
                 .and() 
                 
                 
                 .logout()
-                .logoutSuccessUrl("/snort").permitAll().and().csrf()
+                .logoutSuccessUrl("/login/google").permitAll().and().csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
-    
-         
-      //  http.authorizeRequests() ;
-		//.antMatchers( "/login**", "/webjars/**","/css/**","/js/**").permitAll();	 
-         
+     
          
          
     }

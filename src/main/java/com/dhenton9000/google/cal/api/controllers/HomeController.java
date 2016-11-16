@@ -52,7 +52,7 @@ public class HomeController {
         return model;
     }
 
-    @RequestMapping("/googleAction")
+    @RequestMapping(value="/googleAction",method={RequestMethod.POST})
     public ModelAndView googleAction(ModelAndView model) {
 
         OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(clientResources.getClient(), oauth2ClientContext);
