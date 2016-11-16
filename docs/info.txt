@@ -9,3 +9,12 @@ http://dreamix.eu/blog/java/configuring-google-as-oauth2-authorization-provider-
 https://console.developers.google.com/apis/dashboard?project=event-image-update-system&authuser=1
 
 https://raymondhlee.wordpress.com/2014/12/21/implementing-oauth2-with-spring-security/
+
+google account permissions: https://security.google.com/settings/security/permissions?pli=1
+
+http://paxcel.net/blog/connecting-with-google-mail-account-or-google-calendar-using-java-google-client-library-in-java-spring-web-projects/
+
+http://stackoverflow.com/questions/27864295/how-to-use-oauth2resttemplate
+
+
+https://developers.google.com/google-apps/calendar/v3/reference/
