@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -53,7 +54,7 @@ public class HomeController {
     }
 
     @RequestMapping(value="/googleAction",method={RequestMethod.POST})
-    public ModelAndView googleAction(ModelAndView model) {
+    public ModelAndView googleAction(@RequestParam("information") String information,ModelAndView model) {
 
         OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(clientResources.getClient(), oauth2ClientContext);
 
@@ -76,6 +77,7 @@ public class HomeController {
         }
 
         model.addObject("appTitle", "Google Response");
+        model.addObject("information", information);
         model.setViewName("pages/googleAction");
         return model;
     }
