@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.CalendarListEntry;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.slf4j.Logger;
@@ -60,11 +61,11 @@ public class HomeController {
 
         OAuth2AccessToken token = oAuth2RestTemplate.getAccessToken();
         LOG.debug(token.getTokenType() + " " + token.getValue());
-
+        //https://www.googleapis.com/calendar/v3/users/me/calendarList/primary
         String urlBase = "https://www.googleapis.com/calendar/v3";
         URI url = null;
         String res = "nothing";
-        String uriString = urlBase + "/colors";
+        String uriString = urlBase + "/users/me/calendarList/primary";
         try {
             url = new URI(uriString);
         } catch (URISyntaxException ex) {
@@ -72,10 +73,15 @@ public class HomeController {
         }
         if (url != null) {
            // res = oAuth2RestTemplate.getForObject(url, String.class);
+           //CalendarListEntry calendarListEntry = new CalendarListEntry();
+          //oAuth2RestTemplate.
+         //String tt =   oAuth2RestTemplate.postForObject(url, request, String.class);
+          // oAuth2RestTemplate.postForObject(url, res, responseType)
+           
         } else {
             LOG.error("url null");
         }
-
+        LOG.info("res is "+res);
         model.addObject("appTitle", "Google Response");
         model.addObject("information", information);
         model.setViewName("pages/googleAction");

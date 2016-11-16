@@ -18,3 +18,10 @@ http://stackoverflow.com/questions/27864295/how-to-use-oauth2resttemplate
 
 
 https://developers.google.com/google-apps/calendar/v3/reference/
+
+to add events
+https://developers.google.com/google-apps/calendar/v3/reference/events/insert
+
+
+maybe use the java objects in the rest calls?
+https://developers.google.com/api-client-library/java/google-http-java-client/json
