@@ -5,12 +5,8 @@
  */
 package com.dhenton9000.google.cal.api.controllers;
 
-import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
