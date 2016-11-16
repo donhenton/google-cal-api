@@ -3,9 +3,7 @@
         
  <div class="well"> 
      
+     <h3>This is the google action page</h3>
      
-      
-      stuff
-      
      </div>
 <#include "../common/footer.ftl">
