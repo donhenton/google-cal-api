@@ -20,19 +20,26 @@
         <section id="pageContainer">
             <header>
                 <figure class="logo">${appTitle}</figure>
-                <nav class="topMenu grouping">
-
-
-                    <ul>
-                        <li><a href="/graph">Graph</a></li>
-                        <li><a href="/logout">Logout</a></li>
-                        <li><a href="/">Home</a></li>
-                        </ul>    
-
-
-                    </nav>
+                 
                 </header>
             <section id="main" class="grouping">
                 <div class="mainPageContainer">
                     <!--begin content-->
 
+
+         
+        
+ <div class="well"> 
+    
+     <div class="row">
+        <table border="1" class="table">
+            <tr>
+                <td><div id="horizontalMain"></div></td>
+                <td><button id="updateHorizontalData" class="pull-right btn btn-primary">Update Data</button></td>
+            </tr>
+        </table>
+    </div>
+     
+     
+ </div>    
+<#include "../common/footer.ftl">

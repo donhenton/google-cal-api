@@ -164,7 +164,7 @@ public class GoogleCalendarController {
          */
         Source source = new Source();
         source.setTitle("Click on this link for the report");
-        source.setUrl("http://donhenton.com");
+        source.setUrl("http://localhost:3500/graph");
         event.setSource(source);
 
         /*

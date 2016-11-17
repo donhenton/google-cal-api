@@ -33,6 +33,14 @@ public class HomeController {
         return "pages/logout_done";
 
     }
+    
+    
+    @RequestMapping("/graph")
+    public String graph(Model model) {
+        model.addAttribute("appTitle", "Graph");
+        return "pages/graph";
+
+    }
 
     @RequestMapping("/")
     public ModelAndView home(ModelAndView model) {
