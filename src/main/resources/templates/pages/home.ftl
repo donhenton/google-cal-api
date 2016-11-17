@@ -3,7 +3,7 @@
         
  <div class="well"> 
      
-     
+     <p>${totalUrl}</p>
       
      <form  method="POST" action="/googleAction" class="form inline-form">
          <label for="information">Date For Event</label>

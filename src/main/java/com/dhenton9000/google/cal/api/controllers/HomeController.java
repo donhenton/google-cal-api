@@ -18,12 +18,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
 
-     
+    @Value("${server.port}")
+    private String serverPort;
+    
+    @Value("${server.url}")
+    private String serverUrl;
+    
+    @Value("${spring.profiles.active}")
+    private String activeEnv;
+    
 
     private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
 
@@ -46,10 +55,12 @@ public class HomeController {
     public ModelAndView home(ModelAndView model) {
 
         Date d = new Date();
+        String totalUrl = serverUrl+":"+ serverPort+" "+activeEnv;
         SimpleDateFormat sdfInput = new SimpleDateFormat("MM/dd/yyyy");
         String initialDate = sdfInput.format(d);
         model.addObject("appTitle", "Home Page");
         model.addObject("initialDate",initialDate);
+        model.addObject("totalUrl",totalUrl);
         model.setViewName("pages/home");
         return model;
     }

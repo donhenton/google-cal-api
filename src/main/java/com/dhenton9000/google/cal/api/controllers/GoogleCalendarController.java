@@ -19,10 +19,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -45,8 +45,16 @@ public class GoogleCalendarController {
     @Autowired
     OAuth2RestTemplate oAuth2RestTemplate;
 
-    private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    @Value("${server.port}")
+    private String serverPort;
 
+    @Value("${server.url}")
+    private String serverUrl;
+
+    @Value("${spring.profiles.active}")
+    private String activeEnv;
+
+    private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final Logger LOG = LoggerFactory.getLogger(GoogleCalendarController.class);
 
     @RequestMapping(value = "/googleAction", method = {RequestMethod.POST})
@@ -54,22 +62,21 @@ public class GoogleCalendarController {
 
         //LOG.debug("dateString " + dateString);
         //11/15/2016
-
         SimpleDateFormat sdfInput = new SimpleDateFormat("MM/dd/yyyy");
         SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date d = sdfInput.parse(dateString);
             dateString = sdfOutput.format(d);
-           // LOG.debug("dateString " + dateString);
+            // LOG.debug("dateString " + dateString);
         } catch (ParseException ex) {
-           // LOG.error("could not parse " + dateString);
+            // LOG.error("could not parse " + dateString);
         }
 
         String urlBase = "https://www.googleapis.com/calendar/v3";
         URI url = null;
         String res = "didnt work";
         String uriString = urlBase + "/calendars/primary/events";
-         
+
         try {
             url = new URI(uriString);
         } catch (URISyntaxException ex) {
@@ -78,7 +85,6 @@ public class GoogleCalendarController {
         }
         if (url != null) {
 
-            
             try {
                 Event evs = makeEvent(dateString);
 
@@ -88,15 +94,15 @@ public class GoogleCalendarController {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
                 headers.setContentType(MediaType.APPLICATION_JSON);
-                HttpEntity<String> infoEntity = new HttpEntity<String>(input, headers);               
+                HttpEntity<String> infoEntity = new HttpEntity<String>(input, headers);
                 ResponseEntity<String> responseOut
                         = oAuth2RestTemplate.exchange(url,
                                 HttpMethod.POST, infoEntity, String.class);
                 res = responseOut.getBody();
 
                 if (RestUtil.isError(responseOut.getStatusCode())) {
-                    
-                    LOG.error("res is "+res);
+
+                    LOG.error("res is " + res);
                 }
 
             } catch (IOException iex) {
@@ -108,13 +114,22 @@ public class GoogleCalendarController {
         } else {
             LOG.error("url null");
         }
-         
+
         model.addObject("appTitle", "Google Response");
         model.addObject("dateString", dateString);
         model.addObject("result", res);
         model.setViewName("pages/googleAction");
 
         return model;
+    }
+
+    private String computeGraphURL() {
+        String portInfo = "";
+        if (activeEnv.equals("dev")) {
+            portInfo = ":" + serverPort;
+
+        }
+        return serverUrl + portInfo;
     }
 
     private Event makeEvent(String dateString) {
@@ -164,7 +179,7 @@ public class GoogleCalendarController {
          */
         Source source = new Source();
         source.setTitle("Click on this link for the report");
-        source.setUrl("http://localhost:3500/graph");
+        source.setUrl(computeGraphURL() + "/graph");
         event.setSource(source);
 
         /*
