@@ -10,7 +10,9 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Event.Source;
+import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -27,6 +29,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -63,17 +66,10 @@ public class GoogleCalendarController {
             // res = oAuth2RestTemplate.getForObject(url, String.class);
             try {
                 Event evs = makeEvent();
-
-                evs.setDescription("Test request");
-                Source source = new Source();
-                source.setTitle("The source");
-                source.setUrl("http://donhenton.com");
-                // evs.setSource(source);
+               
                 String input = evs.toPrettyString();
                 //  LOG.debug(input);
 
-                // String input = "";
-                // URI uu = oAuth2RestTemplate.postForLocation(url, input);
                 HttpHeaders headers = new HttpHeaders();
                 headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
                 headers.setContentType(MediaType.APPLICATION_JSON);
@@ -82,9 +78,8 @@ public class GoogleCalendarController {
                         oAuth2RestTemplate.exchange(url, 
                                 HttpMethod.POST, infoEntity, String.class);
                 res =  responseOut.getBody();
-                // res = oAuth2RestTemplate.postForObject(url, input, String.class);
-                //  res = oAuth2RestTemplate.getForObject(url, String.class);
-            } catch (Exception ex) {
+ 
+            } catch (IOException | RestClientException ex) {
                 res = "cannot do calendar list " + ex.getMessage() + " " + ex.getClass().getName();
                 LOG.error(res);
             }
@@ -103,9 +98,9 @@ public class GoogleCalendarController {
 
     private Event makeEvent() {
         Event event = new Event()
-                .setSummary("Google I/O 2016")
-                .setLocation("800 Howard St., San Francisco, CA 94103")
-                .setDescription("A chance to hear more about Google's developer products.");
+                .setSummary("Report Waiting")
+                .setLocation("Networked Insights")
+                .setDescription("A report is waiting. Click on the source link above to access it.");
         event.setFactory(JSON_FACTORY);
         DateTime startDateTime = new DateTime("2016-11-17T09:00:00-07:00");
         EventDateTime start = new EventDateTime()
@@ -113,20 +108,26 @@ public class GoogleCalendarController {
                 .setTimeZone("America/Los_Angeles");
         event.setStart(start);
 
-        DateTime endDateTime = new DateTime("2016-11-17T17:00:00-07:00");
+        DateTime endDateTime = new DateTime("2016-11-17T09:15:00-07:00");
         EventDateTime end = new EventDateTime()
                 .setDateTime(endDateTime)
                 .setTimeZone("America/Los_Angeles");
         event.setEnd(end);
-        /*
-        String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
-        event.setRecurrence(Arrays.asList(recurrence));
+        
+//        String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
+//        event.setRecurrence(Arrays.asList(recurrence));
 
         EventAttendee[] attendees = new EventAttendee[]{
             new EventAttendee().setEmail("lpage@example.com"),
             new EventAttendee().setEmail("sbrin@example.com"),};
         event.setAttendees(Arrays.asList(attendees));
-
+        
+         Source source = new Source();
+                source.setTitle("The source");
+                source.setUrl("http://donhenton.com");
+        event.setSource(source);
+        
+/*
         EventReminder[] reminderOverrides = new EventReminder[]{
             new EventReminder().setMethod("email").setMinutes(24 * 60),
             new EventReminder().setMethod("popup").setMinutes(10),};
