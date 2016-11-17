@@ -14,22 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import com.google.api.services.calendar.CalendarScopes;
-import java.net.URI;
-import java.net.URISyntaxException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
 
-    @Autowired
-    OAuth2RestTemplate oAuth2RestTemplate;
+     
 
     private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
 
@@ -48,40 +40,7 @@ public class HomeController {
         return model;
     }
 
-    @RequestMapping(value="/googleAction",method={RequestMethod.POST})
-    public ModelAndView googleAction(@RequestParam("information") String information,ModelAndView model) {
-
-       // OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(clientResources.getClient(), oauth2ClientContext);
-
-        OAuth2AccessToken token = oAuth2RestTemplate.getAccessToken();
-       // LOG.debug(token.getTokenType() + " " + token.getValue());
-        //https://www.googleapis.com/calendar/v3/users/me/calendarList/primary
-        String urlBase = "https://www.googleapis.com/calendar/v3";
-        URI url = null;
-        String res = "nothing";
-        String uriString = urlBase + "/users/me/calendarList/primary";
-        try {
-            url = new URI(uriString);
-        } catch (URISyntaxException ex) {
-            LOG.error("could not create uri " + uriString);
-        }
-        if (url != null) {
-            res = oAuth2RestTemplate.getForObject(url, String.class);
-           //CalendarListEntry calendarListEntry = new CalendarListEntry();
-          //oAuth2RestTemplate.
-         //String tt =   oAuth2RestTemplate.postForObject(url, request, String.class);
-          // oAuth2RestTemplate.postForObject(url, res, responseType)
-           
-        } else {
-            LOG.error("url null");
-        }
-        LOG.info("res is "+res);
-        model.addObject("appTitle", "Google Response");
-        model.addObject("information", information);
-        model.setViewName("pages/googleAction");
-        return model;
-    }
-
+    
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutPage(HttpServletRequest request, HttpServletResponse response) {

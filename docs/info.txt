@@ -25,3 +25,5 @@ https://developers.google.com/google-apps/calendar/v3/reference/events/insert
 
 maybe use the java objects in the rest calls?
 https://developers.google.com/api-client-library/java/google-http-java-client/json
+
+https://developers.google.com/google-apps/calendar/concepts/
