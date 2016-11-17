@@ -4,7 +4,7 @@ https://spring.io/guides/tutorials/spring-boot-oauth2/#_social_login_click
 https://github.com/bashofmann/oauth2_java_webapp_example
 http://dreamix.eu/blog/java/configuring-google-as-oauth2-authorization-provider-in-spring-boot
 
-
+https://developers.google.com/gadgets/docs/overview
 
 https://console.developers.google.com/apis/dashboard?project=event-image-update-system&authuser=1
 

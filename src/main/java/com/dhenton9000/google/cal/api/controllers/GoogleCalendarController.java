@@ -162,7 +162,7 @@ public class GoogleCalendarController {
             Gadget g = new Gadget();
             g.setHeight(150);
             g.setWidth(300);
-            g.setLink("https://www.thefreedictionary.com/_/WoD/wod-module.xm");
+            g.setLink("https://www.thefreedictionary.com/_/WoD/wod-module.xml");
             g.setIconLink("https://www.thefreedictionary.com/favicon.ico");
             g.setTitle("Word of the Day");
             g.setType("application/x-google-gadgets+xml");
