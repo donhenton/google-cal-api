@@ -10,16 +10,16 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.Event.Gadget;
 import com.google.api.services.calendar.model.Event.Source;
-import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
+import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +33,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.servlet.ModelAndView;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *
@@ -52,14 +50,26 @@ public class GoogleCalendarController {
     private static final Logger LOG = LoggerFactory.getLogger(GoogleCalendarController.class);
 
     @RequestMapping(value = "/googleAction", method = {RequestMethod.POST})
-    public ModelAndView googleAction(@RequestParam("information") String information, ModelAndView model) {
+    public ModelAndView googleAction(@RequestParam("dateString") String dateString, ModelAndView model) {
+
+        LOG.debug("dateString " + dateString);
+        //11/15/2016
+
+        SimpleDateFormat sdfInput = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date d = sdfInput.parse(dateString);
+            dateString = sdfOutput.format(d);
+           // LOG.debug("dateString " + dateString);
+        } catch (ParseException ex) {
+           // LOG.error("could not parse " + dateString);
+        }
 
         String urlBase = "https://www.googleapis.com/calendar/v3";
         URI url = null;
         String res = "didnt work";
-        //id = expcalendar1000@gmail.com;
-        // String uriString = urlBase + "/users/me/calendarList/primary";
         String uriString = urlBase + "/calendars/primary/events";
+         
         try {
             url = new URI(uriString);
         } catch (URISyntaxException ex) {
@@ -68,9 +78,9 @@ public class GoogleCalendarController {
         }
         if (url != null) {
 
-            // res = oAuth2RestTemplate.getForObject(url, String.class);
+            
             try {
-                Event evs = makeEvent();
+                Event evs = makeEvent(dateString);
 
                 String input = evs.toPrettyString();
                 //  LOG.debug(input);
@@ -78,18 +88,14 @@ public class GoogleCalendarController {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
                 headers.setContentType(MediaType.APPLICATION_JSON);
-                HttpEntity<String> infoEntity = new HttpEntity<String>(input, headers);
-                LOG.debug("a1");
+                HttpEntity<String> infoEntity = new HttpEntity<String>(input, headers);               
                 ResponseEntity<String> responseOut
                         = oAuth2RestTemplate.exchange(url,
                                 HttpMethod.POST, infoEntity, String.class);
-                LOG.debug("a2");
                 res = responseOut.getBody();
-                LOG.debug("a3");
 
                 if (RestUtil.isError(responseOut.getStatusCode())) {
-                    //MyErrorResource error = (new ObjectMapper()).readValue(res, MyErrorResource.class);
-                    //throw new RestClientException("[" + error.getCode() + "] " + error.getMessage());
+                    
                     LOG.error("res is "+res);
                 }
 
@@ -102,57 +108,62 @@ public class GoogleCalendarController {
         } else {
             LOG.error("url null");
         }
-
+         
         model.addObject("appTitle", "Google Response");
-        model.addObject("information", information);
+        model.addObject("dateString", dateString);
         model.addObject("result", res);
         model.setViewName("pages/googleAction");
 
         return model;
     }
 
-    private Event makeEvent() {
+    private Event makeEvent(String dateString) {
         Event event = new Event()
                 .setSummary("Report Waiting")
                 .setLocation("Networked Insights")
                 .setDescription("A report is waiting. Click on the source link above to access it.");
         event.setFactory(JSON_FACTORY);
-        //DateTime startDateTime = new DateTime("2016-11-17T09:00:00-07:00");
-        DateTime startDateTime = new DateTime("2016-11-18");
+        DateTime startDateTime = new DateTime(dateString + "T09:00:00-07:00");
+        // DateTime startDateTime = new DateTime("2016-11-18T09:00:00-07:00");
         EventDateTime start = new EventDateTime()
                 .setDateTime(startDateTime)
                 .setTimeZone("America/Los_Angeles");
         event.setStart(start);
 
-        // DateTime endDateTime = new DateTime("2016-11-17T09:15:00-07:00");
-        DateTime endDateTime = new DateTime("2016-11-19");
+        DateTime endDateTime = new DateTime(dateString + "T09:15:00-07:00");
+        // DateTime endDateTime = new DateTime("2016-11-19T09:00:00-07:00");
         EventDateTime end = new EventDateTime()
                 .setDateTime(endDateTime)
                 .setTimeZone("America/Los_Angeles");
         event.setEnd(end);
+
+        // The gadget will display a popup window with the icon as a link, but 
+        // both the icon and the content need to be reached by https
+        /*
         Gadget g = new Gadget();
         g.setHeight(150);
         g.setWidth(300);
-        g.setLink("http://donhenton.com");
-        g.setTitle("Your report");
+        g.setLink("http://www.thefreedictionary.com/_/WoD/wod-module.xm");
+        g.setIconLink("http://www.thefreedictionary.com/favicon.ico");
+        g.setTitle("Word of the Day");
         g.setType("application/x-google-gadgets+xml");
 
         Map<String, String> prefs = new HashMap<String, String>();
         prefs.put("Format", "0");
         prefs.put("Days", "1");
-        g.setPreferences(prefs);
-
+        g.setPreferences(prefs);       
         event.setGadget(g);
-
+         */
 //        String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
 //        event.setRecurrence(Arrays.asList(recurrence));
+/*
         EventAttendee[] attendees = new EventAttendee[]{
             new EventAttendee().setEmail("lpage@example.com"),
             new EventAttendee().setEmail("sbrin@example.com"),};
         event.setAttendees(Arrays.asList(attendees));
-
+         */
         Source source = new Source();
-        source.setTitle("The source");
+        source.setTitle("Click on this link for the report");
         source.setUrl("http://donhenton.com");
         event.setSource(source);
 

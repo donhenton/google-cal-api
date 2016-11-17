@@ -60,7 +60,15 @@ $(document).ready(
      
         jQuery.ui.tabs.prototype._isLocal = function() { return true; };
              $('.tabs').tabs();
+             
+             
+             
+          $( "#dateString" ).datepicker();   
+             
         });
+        
+        
+        
         
         function showExplainDialog()
         {

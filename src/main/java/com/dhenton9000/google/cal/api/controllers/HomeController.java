@@ -5,6 +5,8 @@
  */
 package com.dhenton9000.google.cal.api.controllers;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -35,7 +37,11 @@ public class HomeController {
     @RequestMapping("/")
     public ModelAndView home(ModelAndView model) {
 
+        Date d = new Date();
+        SimpleDateFormat sdfInput = new SimpleDateFormat("MM/dd/yyyy");
+        String initialDate = sdfInput.format(d);
         model.addObject("appTitle", "Home Page");
+        model.addObject("initialDate",initialDate);
         model.setViewName("pages/home");
         return model;
     }
