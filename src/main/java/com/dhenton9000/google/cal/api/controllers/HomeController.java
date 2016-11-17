@@ -5,7 +5,6 @@
  */
 package com.dhenton9000.google.cal.api.controllers;
 
-import com.dhenton9000.google.cal.api.ClientResources;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -16,13 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.google.api.services.calendar.CalendarScopes;
-import com.google.api.services.calendar.model.CalendarListEntry;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,16 +29,13 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomeController {
 
     @Autowired
-    ClientResources clientResources;
-    @Autowired
-    OAuth2ClientContext oauth2ClientContext;
+    OAuth2RestTemplate oAuth2RestTemplate;
 
     private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
 
     @RequestMapping("/logout_done")
     public String logoutDone(Model model) {
         model.addAttribute("appTitle", "Logged Out");
-        String t = CalendarScopes.CALENDAR;
         return "pages/logout_done";
 
     }
@@ -57,10 +51,10 @@ public class HomeController {
     @RequestMapping(value="/googleAction",method={RequestMethod.POST})
     public ModelAndView googleAction(@RequestParam("information") String information,ModelAndView model) {
 
-        OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(clientResources.getClient(), oauth2ClientContext);
+       // OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(clientResources.getClient(), oauth2ClientContext);
 
         OAuth2AccessToken token = oAuth2RestTemplate.getAccessToken();
-        LOG.debug(token.getTokenType() + " " + token.getValue());
+       // LOG.debug(token.getTokenType() + " " + token.getValue());
         //https://www.googleapis.com/calendar/v3/users/me/calendarList/primary
         String urlBase = "https://www.googleapis.com/calendar/v3";
         URI url = null;
@@ -72,7 +66,7 @@ public class HomeController {
             LOG.error("could not create uri " + uriString);
         }
         if (url != null) {
-           // res = oAuth2RestTemplate.getForObject(url, String.class);
+            res = oAuth2RestTemplate.getForObject(url, String.class);
            //CalendarListEntry calendarListEntry = new CalendarListEntry();
           //oAuth2RestTemplate.
          //String tt =   oAuth2RestTemplate.postForObject(url, request, String.class);

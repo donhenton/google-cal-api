@@ -34,10 +34,10 @@
       <logger name="springfox">
         <level value="ERROR"/>
     </logger>
-     <logger name="org.hibernate">
+     <logger name="ch.qos.logback">
         <level value="ERROR"/>
     </logger>
-     <logger name="org.hibernate.type">
+     <logger name="org.hibernate">
         <level value="ERROR"/>
     </logger>
 
