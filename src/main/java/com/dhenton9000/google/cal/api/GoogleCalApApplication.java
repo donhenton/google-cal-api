@@ -90,9 +90,11 @@ public class GoogleCalApApplication extends WebSecurityConfigurerAdapter {
         interceptors.add(new LoggingRequestInterceptor());
         restTemplate.setInterceptors(interceptors);
         restTemplate.setRequestFactory(requestFactory);
-        restTemplate.setErrorHandler(new AppResponseErrorHandler());
+       
         ///////////////////////////////////////////////////////////////////////
         */
+        
+        restTemplate.setErrorHandler(new AppResponseErrorHandler());
         return restTemplate;
     }
 
