@@ -1,5 +1,6 @@
 package com.dhenton9000.google.cal.api;
 
+import com.dhenton9000.google.rest.utils.AppResponseErrorHandler;
 import com.dhenton9000.google.rest.utils.LoggingRequestInterceptor;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -81,13 +82,15 @@ public class GoogleCalApApplication extends WebSecurityConfigurerAdapter {
         OAuth2RestTemplate restTemplate = 
 
         new OAuth2RestTemplate(google().getClient(), oauth2ClientContext);
-
+        ///comment out this section to turn off wire logging////////////////////
         BufferingClientHttpRequestFactory requestFactory = 
                 new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
         List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
         interceptors.add(new LoggingRequestInterceptor());
         restTemplate.setInterceptors(interceptors);
         restTemplate.setRequestFactory(requestFactory);
+        restTemplate.setErrorHandler(new AppResponseErrorHandler());
+        ///////////////////////////////////////////////////////////////////////
         return restTemplate;
     }
 

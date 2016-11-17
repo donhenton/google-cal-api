@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.dhenton9000.google.rest.utils;
 
 /**
- *
- * @author dhenton
+ * interceptor for wire logging of request/response
  */
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +16,7 @@ import org.springframework.http.client.ClientHttpResponse;
 
 public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 
-    final static Logger log = LoggerFactory.getLogger(LoggingRequestInterceptor.class);
+    private final static Logger LOG = LoggerFactory.getLogger(LoggingRequestInterceptor.class);
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
@@ -33,16 +27,18 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
     }
 
     private void traceRequest(HttpRequest request, byte[] body) throws IOException {
-        log.debug("===========================request begin================================================");
-        log.debug("URI         : {}", request.getURI());
-        log.debug("Method      : {}", request.getMethod());
-        log.debug("Headers     : {}", request.getHeaders() );
-        log.debug("Request body: {}", new String(body, "UTF-8"));
-        log.debug("==========================request end================================================");
+        LOG.debug("\n===========================request begin================================================");
+        LOG.debug("URI         : {}", request.getURI());
+        LOG.debug("Method      : {}", request.getMethod());
+        LOG.debug("Headers     : {}", request.getHeaders() );
+        LOG.debug("Request body: {}", new String(body, "UTF-8"));
+        LOG.debug("==========================request end================================================\n");
     }
 
     private void traceResponse(ClientHttpResponse response) throws IOException {
         StringBuilder inputStringBuilder = new StringBuilder();
+        try
+        {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"));
         String line = bufferedReader.readLine();
         while (line != null) {
@@ -50,12 +46,17 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
             inputStringBuilder.append('\n');
             line = bufferedReader.readLine();
         }
-        log.debug("============================response begin==========================================");
-        log.debug("Status code  : {}", response.getStatusCode());
-        log.debug("Status text  : {}", response.getStatusText());
-        log.debug("Headers      : {}", response.getHeaders());
-        log.debug("Response body: {}", inputStringBuilder.toString());
-        log.debug("=======================response end=================================================");
+        LOG.debug("\n============================response begin==========================================");
+        LOG.debug("Status code  : {}", response.getStatusCode());
+        LOG.debug("Status text  : {}", response.getStatusText());
+        LOG.debug("Headers      : {}", response.getHeaders());
+        LOG.debug("Response body: {}", inputStringBuilder.toString());
+        LOG.debug("=======================response end=================================================\n");
+        }
+        catch (IOException err)
+        {
+            LOG.error("problem in logging intersceptor "+err.getMessage());
+        }
     }
 
 }
