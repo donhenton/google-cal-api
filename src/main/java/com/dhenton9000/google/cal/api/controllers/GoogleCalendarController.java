@@ -52,7 +52,7 @@ public class GoogleCalendarController {
     @RequestMapping(value = "/googleAction", method = {RequestMethod.POST})
     public ModelAndView googleAction(@RequestParam("dateString") String dateString, ModelAndView model) {
 
-        LOG.debug("dateString " + dateString);
+        //LOG.debug("dateString " + dateString);
         //11/15/2016
 
         SimpleDateFormat sdfInput = new SimpleDateFormat("MM/dd/yyyy");
