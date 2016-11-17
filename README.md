@@ -23,3 +23,13 @@ google.resource.prefer-token-info=false
 
 In production the client-id and the client-secret will come in via system
 properties provided by heroku, along with server.port=$PORT
+
+## Deploy To Heroku
+heroku login
+heroku deploy:jar target/google-cal-api-0.0.1-SNAPSHOT.jar --app google-cal-api
+
+## Redirect Urls to set in the API manager (https://console.developers.google.com/apis/dashboard?project=event-image-update-system&authuser=1)
+http://localhost:3500/login/google 
+http://localhost:3500/ 
+http://google-cal-api.herokuapp.com/login/google 
+https://google-cal-api.herokuapp.com/login/google

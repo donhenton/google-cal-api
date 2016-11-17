@@ -10,6 +10,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.Event.Gadget;
 import com.google.api.services.calendar.model.Event.Source;
 import com.google.api.services.calendar.model.EventDateTime;
 import java.io.IOException;
@@ -19,6 +20,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,21 +157,27 @@ public class GoogleCalendarController {
 
         // The gadget will display a popup window with the icon as a link, but 
         // both the icon and the content need to be reached by https
-        /*
-        Gadget g = new Gadget();
-        g.setHeight(150);
-        g.setWidth(300);
-        g.setLink("http://www.thefreedictionary.com/_/WoD/wod-module.xm");
-        g.setIconLink("http://www.thefreedictionary.com/favicon.ico");
-        g.setTitle("Word of the Day");
-        g.setType("application/x-google-gadgets+xml");
+        if (activeEnv.equals("prod")) {
+             
+            Gadget g = new Gadget();
+            g.setHeight(150);
+            g.setWidth(300);
+            g.setLink("https://www.thefreedictionary.com/_/WoD/wod-module.xm");
+            g.setIconLink("https://www.thefreedictionary.com/favicon.ico");
+            g.setTitle("Word of the Day");
+            g.setType("application/x-google-gadgets+xml");
 
-        Map<String, String> prefs = new HashMap<String, String>();
-        prefs.put("Format", "0");
-        prefs.put("Days", "1");
-        g.setPreferences(prefs);       
-        event.setGadget(g);
-         */
+            Map<String, String> prefs = new HashMap<String, String>();
+            prefs.put("Format", "0");
+            prefs.put("Days", "1");
+            g.setPreferences(prefs);
+            event.setGadget(g);
+            
+            
+            LOG.info("hit the prod");
+
+        }
+
 //        String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
 //        event.setRecurrence(Arrays.asList(recurrence));
 /*

@@ -10,7 +10,6 @@
         
         <script src="/webjars/jquery/2.2.1/dist/jquery.min.js"  type="text/javascript"></script>  
         <script src="/webjars/jquery-ui/1.11.4/jquery-ui.min.js"  type="text/javascript"></script>  
-        <script src="/webjars/d3js/3.5.17/d3.min.js"  type="text/javascript"></script> 
         <script src="/js/ui-init.js" type="text/javascript"></script>   
         <script src="/js/code/bundle.js" type="text/javascript"></script>
         <link href="webjars/jsapp/main_app_style.css" rel="stylesheet" type="text/css"/>

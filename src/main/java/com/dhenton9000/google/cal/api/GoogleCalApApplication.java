@@ -83,7 +83,7 @@ public class GoogleCalApApplication extends WebSecurityConfigurerAdapter {
 
         new OAuth2RestTemplate(google().getClient(), oauth2ClientContext);
         ///comment out this section to turn off wire logging////////////////////
-        /*
+       
         BufferingClientHttpRequestFactory requestFactory = 
                 new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
         List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
@@ -92,7 +92,7 @@ public class GoogleCalApApplication extends WebSecurityConfigurerAdapter {
         restTemplate.setRequestFactory(requestFactory);
        
         ///////////////////////////////////////////////////////////////////////
-        */
+        
         
         restTemplate.setErrorHandler(new AppResponseErrorHandler());
         return restTemplate;
