@@ -45,15 +45,18 @@ public class GoogleCalApApplication extends WebSecurityConfigurerAdapter {
         return map;
     }
 
+    /**
+     * configure security 
+     * @param http
+     * @throws Exception 
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
          
-        http.antMatcher("/**").authorizeRequests().antMatchers( "/login**","/logout**", "/webjars/**").permitAll().anyRequest()
+        http.antMatcher("/**").authorizeRequests().antMatchers( "/login**","/logout**","css/**", "/js/**", "/webjars/**").permitAll().anyRequest()
                 .authenticated().and().exceptionHandling()
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login/google")) 
-                .and() 
-                
-                
+                .and()             
                 .logout()
                 .logoutSuccessUrl("/login/google").permitAll().and().csrf() 
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
@@ -68,13 +71,6 @@ public class GoogleCalApApplication extends WebSecurityConfigurerAdapter {
         SpringApplication.run(GoogleCalApApplication.class, args);
     }
 
-    @Bean
-    public FilterRegistrationBean oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(filter);
-        registration.setOrder(-100);
-        return registration;
-    }
 
     @Bean
     @ConfigurationProperties("google")
@@ -82,13 +78,21 @@ public class GoogleCalApApplication extends WebSecurityConfigurerAdapter {
         return new ClientResources();
     }
 
+    /**
+    
+     * @return 
+     */
     private Filter ssoFilter() {
-        CompositeFilter filter = new CompositeFilter();
-        List<Filter> filters = new ArrayList<>();
-        filters.add(ssoFilter(google(), "/login/google"));
-
-        filter.setFilters(filters);
-        return filter;
+        /*
+        used if there were more than one login provider
+         CompositeFilter filter = new CompositeFilter();
+         List<Filter> filters = new ArrayList<>();
+         filters.add(ssoFilter(google(), "/login/google"));
+        
+         filter.setFilters(filters);
+         return filter;
+        */
+        return ssoFilter(google(), "/login/google");
     }
 
     private Filter ssoFilter(ClientResources client, String path) {
