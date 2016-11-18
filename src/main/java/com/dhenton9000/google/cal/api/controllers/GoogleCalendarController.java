@@ -57,6 +57,12 @@ public class GoogleCalendarController {
     @Value("${spring.profiles.active}")
     private String activeEnv;
 
+    @Value("${calendar.gadget.iconLink}")
+    private String gadgetIconLink;
+
+    @Value("${calendar.gadget.link}")
+    private String gadgetLink;
+
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final Logger LOG = LoggerFactory.getLogger(GoogleCalendarController.class);
 
@@ -136,10 +142,10 @@ public class GoogleCalendarController {
     }
 
     private Event makeEvent(String dateString) {
-        Event event = new Event()
-                .setSummary("Report Waiting")
-                .setLocation("Networked Insights")
-                .setDescription("A report is waiting. Click on the source link above to access it.");
+        Event event = new Event();
+        // .setSummary("Report Waiting")
+        //  .setLocation("Networked Insights")
+        //  .setDescription("A report is waiting. Click on the source link above to access it.");
         event.setFactory(JSON_FACTORY);
         DateTime startDateTime = new DateTime(dateString + "T09:00:00-07:00");
         // DateTime startDateTime = new DateTime("2016-11-18T09:00:00-07:00");
@@ -157,27 +163,27 @@ public class GoogleCalendarController {
 
         // The gadget will display a popup window with the icon as a link, but 
         // both the icon and the content need to be reached by https
-        if (activeEnv.equals("prod")) {
-             
-            Gadget g = new Gadget();
-            g.setHeight(150);
-            g.setWidth(300);
-            g.setLink("https://www.thefreedictionary.com/_/WoD/wod-module.xml");
-            g.setIconLink("https://www.thefreedictionary.com/favicon.ico");
-            g.setTitle("Word of the Day");
-            g.setType("application/x-google-gadgets+xml");
+        // if (activeEnv.equals("prod")) {
+        Gadget g = new Gadget();
+        //g.setHeight(150);
+        // g.setWidth(300);
+        g.setLink(gadgetLink);
+        g.setIconLink(gadgetIconLink);
+        g.setTitle("Test Link");
+        g.setType("application/x-google-gadgets+xml");
+        g.setDisplay("chip");
+        g.setWidth(300);
+        g.setHeight(136);
 
-            Map<String, String> prefs = new HashMap<String, String>();
-            prefs.put("Format", "0");
-            prefs.put("Days", "1");
-            g.setPreferences(prefs);
-            event.setGadget(g);
-            
-            
-            LOG.info("hit the prod");
+        Map<String, String> prefs = new HashMap<String, String>();
+         prefs.put("Format", "0");
+         prefs.put("Days", "1");
+         g.setPreferences(prefs);
+        event.setGadget(g);
 
-        }
+        LOG.info("hit the prod");
 
+        // }
 //        String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
 //        event.setRecurrence(Arrays.asList(recurrence));
 /*
@@ -186,10 +192,10 @@ public class GoogleCalendarController {
             new EventAttendee().setEmail("sbrin@example.com"),};
         event.setAttendees(Arrays.asList(attendees));
          */
-        Source source = new Source();
-        source.setTitle("Click on this link for the report");
-        source.setUrl(computeGraphURL() + "/graph");
-        event.setSource(source);
+        // Source source = new Source();
+        // source.setTitle("Click on this link for the report");
+        // source.setUrl(computeGraphURL() + "/graph");
+        // event.setSource(source);
 
         /*
         EventReminder[] reminderOverrides = new EventReminder[]{

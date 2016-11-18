@@ -4,6 +4,8 @@ https://spring.io/guides/tutorials/spring-boot-oauth2/#_social_login_click
 https://github.com/bashofmann/oauth2_java_webapp_example
 http://dreamix.eu/blog/java/configuring-google-as-oauth2-authorization-provider-in-spring-boot
 
+
+https://keyholesoftware.com/2014/11/26/google-calendar-gadget-in-angular/
 https://developers.google.com/gadgets/docs/overview
 https://developers.google.com/gadgets/
 
@@ -28,3 +30,7 @@ maybe use the java objects in the rest calls?
 https://developers.google.com/api-client-library/java/google-http-java-client/json
 
 https://developers.google.com/google-apps/calendar/concepts/
+
+
+Translator for google widget:
+http://www.gmodules.com/gadgets/ifr?url=https%3A%2F%2Fdonhenton.github.io%2Fcalendar-gadget%2Fpublic_html%2Fgadget.xml?333
