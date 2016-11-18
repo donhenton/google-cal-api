@@ -167,6 +167,8 @@ public class GoogleCalendarController {
         Gadget g = new Gadget();
         //g.setHeight(150);
         // g.setWidth(300);
+        //TODO add random number on the end of the link to prevent cacheing
+        // eg ?333
         g.setLink(gadgetLink);
         g.setIconLink(gadgetIconLink);
         g.setTitle("Test Link");
