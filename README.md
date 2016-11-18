@@ -33,3 +33,8 @@ http://localhost:3500/login/google
 http://localhost:3500/ 
 http://google-cal-api.herokuapp.com/login/google 
 https://google-cal-api.herokuapp.com/login/google
+
+
+## Calendar gadget code 
+https://github.com/donhenton/google-cal-api.git
+housed publicly in the gh-pages branch

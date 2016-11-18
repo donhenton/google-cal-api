@@ -142,10 +142,10 @@ public class GoogleCalendarController {
     }
 
     private Event makeEvent(String dateString) {
-        Event event = new Event();
-        // .setSummary("Report Waiting")
-        //  .setLocation("Networked Insights")
-        //  .setDescription("A report is waiting. Click on the source link above to access it.");
+        Event event = new Event() 
+         .setSummary("Report Waiting")
+          .setLocation("Networked Insights")
+          .setDescription("A report is waiting. Click on the source link above to access it.");
         event.setFactory(JSON_FACTORY);
         DateTime startDateTime = new DateTime(dateString + "T09:00:00-07:00");
         // DateTime startDateTime = new DateTime("2016-11-18T09:00:00-07:00");
@@ -174,9 +174,9 @@ public class GoogleCalendarController {
         g.setTitle("Test Link");
         g.setType("application/x-google-gadgets+xml");
         g.setDisplay("chip");
-        g.setWidth(300);
-        g.setHeight(136);
-
+        g.setWidth(350);
+        g.setHeight(300);
+//300, height: 200
         Map<String, String> prefs = new HashMap<String, String>();
          prefs.put("Format", "0");
          prefs.put("Days", "1");
