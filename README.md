@@ -30,7 +30,7 @@ heroku deploy:jar target/google-cal-api-0.0.1-SNAPSHOT.jar --app google-cal-api
 
 ## Redirect Urls to set in the API manager 
 
-[console](https://console.developers.google.com/apis/dashboard?project=event-image-update-system&authuser=1)
+Api Manager [console](https://console.developers.google.com/apis/dashboard?project=event-image-update-system&authuser=1).
 
 ```
 http://localhost:3500/login/google 
