@@ -34,3 +34,11 @@ https://developers.google.com/google-apps/calendar/concepts/
 
 Translator for google widget:
 http://www.gmodules.com/gadgets/ifr?url=https%3A%2F%2Fdonhenton.github.io%2Fcalendar-gadget%2Fpublic_html%2Fgadget.xml?333
+
+
+
+
+
+sharing a calendar programmatically:
+
+http://stackoverflow.com/questions/21094240/who-owns-calendars-created-by-service-account-via-google-calendar-api-and-how-ca
