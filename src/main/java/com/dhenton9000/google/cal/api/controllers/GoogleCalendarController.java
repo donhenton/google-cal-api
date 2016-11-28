@@ -57,11 +57,6 @@ public class GoogleCalendarController {
     @Value("${spring.profiles.active}")
     private String activeEnv;
 
-    @Value("${calendar.gadget.iconLink}")
-    private String gadgetIconLink;
-
-    @Value("${calendar.gadget.link}")
-    private String gadgetLink;
 
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final Logger LOG = LoggerFactory.getLogger(GoogleCalendarController.class);
@@ -161,27 +156,7 @@ public class GoogleCalendarController {
                 .setTimeZone("America/Los_Angeles");
         event.setEnd(end);
 
-        // The gadget will display a popup window with the icon as a link, but 
-        // both the icon and the content need to be reached by https
-        // if (activeEnv.equals("prod")) {
-        Gadget g = new Gadget();
-        //g.setHeight(150);
-        // g.setWidth(300);
-        //TODO add random number on the end of the link to prevent cacheing
-        // eg ?333
-        g.setLink(gadgetLink);
-        g.setIconLink(gadgetIconLink);
-        g.setTitle("Test Link");
-        g.setType("application/x-google-gadgets+xml");
-        g.setDisplay("chip");
-        g.setWidth(350);
-        g.setHeight(300);
-//300, height: 200
-        Map<String, String> prefs = new HashMap<String, String>();
-         prefs.put("Format", "0");
-         prefs.put("Days", "1");
-         g.setPreferences(prefs);
-        event.setGadget(g);
+       
 
         LOG.info("hit the prod");
 
@@ -194,10 +169,10 @@ public class GoogleCalendarController {
             new EventAttendee().setEmail("sbrin@example.com"),};
         event.setAttendees(Arrays.asList(attendees));
          */
-        // Source source = new Source();
-        // source.setTitle("Click on this link for the report");
-        // source.setUrl(computeGraphURL() + "/graph");
-        // event.setSource(source);
+         Source source = new Source();
+         source.setTitle("Click on this link for the report");
+         source.setUrl(computeGraphURL() + "/graph");
+         event.setSource(source);
 
         /*
         EventReminder[] reminderOverrides = new EventReminder[]{
