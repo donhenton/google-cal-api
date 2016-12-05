@@ -5,6 +5,8 @@
  */
 package com.dhenton9000.google.cal.api.controllers;
 
+import com.dhenton9000.google.cal.api.UserInfo;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 @Controller
 public class HomeController {
@@ -51,16 +54,31 @@ public class HomeController {
 
     }
 
-    @RequestMapping("/")
-    public ModelAndView home(ModelAndView model) {
+    /*
+    
+     public ModelAndView home(Principal principal , ModelAndView model) {
 
         Date d = new Date();
+        String name = principal.getName();
+        String className = principal.getClass().getName();
+        LOG.info("XXXX "+className);
+ 
+    */
+    @RequestMapping("/")
+    public ModelAndView home(Principal principal, ModelAndView model) {
+
+        Date d = new Date();
+        
+        OAuth2Authentication auth = (OAuth2Authentication) principal;
+
+        UserInfo userInfo = (UserInfo) auth.getUserAuthentication().getPrincipal();
         String totalUrl = serverUrl+":"+ serverPort+" "+activeEnv;
         SimpleDateFormat sdfInput = new SimpleDateFormat("MM/dd/yyyy");
         String initialDate = sdfInput.format(d);
         model.addObject("appTitle", "Home Page");
         model.addObject("initialDate",initialDate);
         model.addObject("totalUrl",totalUrl);
+        model.addObject("userInfo",userInfo);
         model.setViewName("pages/home");
         return model;
     }

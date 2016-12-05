@@ -120,8 +120,12 @@ public class GoogleCalApApplication extends WebSecurityConfigurerAdapter {
                 path);
         OAuth2RestTemplate oAuth2RestTemplate = getRestClient();
         oAuth2ClientAuthenticationFilter.setRestTemplate(oAuth2RestTemplate);
+        
         UserInfoTokenServices tokenServices = new UserInfoTokenServices(client.getResource().getUserInfoUri(),
                 client.getClient().getClientId());
+        //see GoogleUserInfoPrincipalExtractor for an explanation
+        tokenServices.setPrincipalExtractor(new GoogleUserInfoPrincipalExtractor());
+        
         tokenServices.setRestTemplate(oAuth2RestTemplate);
         oAuth2ClientAuthenticationFilter.setTokenServices(tokenServices);
         return oAuth2ClientAuthenticationFilter;

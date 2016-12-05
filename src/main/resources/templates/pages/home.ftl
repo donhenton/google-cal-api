@@ -1,7 +1,7 @@
 <#include "../common/header.ftl">
          
         
- <div class="well"> 
+ <div class="column50Left"> 
      
      <p>${totalUrl}</p>
       
@@ -13,4 +13,18 @@
      </form>
       
      </div>
+
+<div class="column50Right">
+    <h3>User Details</h3>
+    
+    <table class="table table-striped">
+        <tr><td>Name</td><td>${userInfo.name}</td></tr>
+        <#if userInfo.link??>
+        <tr><td>Link</td><td><a href="${userInfo.link}" _target="_new">Google Plus</a></td></tr>
+        </#if>
+        
+    </table>
+    
+     
+</div>
 <#include "../common/footer.ftl">

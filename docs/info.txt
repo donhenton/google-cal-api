@@ -42,3 +42,6 @@ http://www.gmodules.com/gadgets/ifr?url=https%3A%2F%2Fdonhenton.github.io%2Fcale
 sharing a calendar programmatically:
 
 http://stackoverflow.com/questions/21094240/who-owns-calendars-created-by-service-account-via-google-calendar-api-and-how-ca
+
+
+https://github.com/skate056/spring-security-oauth2-google/blob/master/src/main/resources/security-context.xml
