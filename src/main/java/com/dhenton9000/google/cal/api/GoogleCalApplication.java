@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 //@EnableOAuth2Client
 @EnableOAuth2Sso
-public class GoogleCalApApplication extends WebSecurityConfigurerAdapter {
+public class GoogleCalApplication extends WebSecurityConfigurerAdapter {
 
     @Autowired
     OAuth2ClientContext oauth2ClientContext;
@@ -67,7 +67,7 @@ public class GoogleCalApApplication extends WebSecurityConfigurerAdapter {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(GoogleCalApApplication.class, args);
+        SpringApplication.run(GoogleCalApplication.class, args);
     }
 
     @Bean

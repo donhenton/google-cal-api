@@ -28,21 +28,21 @@ public class GoogleUserInfoPrincipalExtractor implements PrincipalExtractor {
     @Override
     public Object extractPrincipal(Map<String, Object> map) {
          
-         String name = map.get("name").toString();
-         String id = map.get("id").toString();
-         String givenName = map.get("given_name").toString();
-         String familyName = map.get("family_name").toString();
-         String gender = map.get("gender").toString();
-         String picture = map.get("picture").toString();
-         String link = map.get("link").toString();
+         String name = (String) map.get("name");
+         String id = (String) map.get("id");
+         String givenName = (String) map.get("given_name");
+         String familyName = (String) map.get("family_name");
+         String gender = (String) map.get("gender");
+         String picture = (String) map.get("picture");
+         String link = (String) map.get("link");
          UserInfo u = new UserInfo(id,name,givenName,familyName,gender,picture,link); 
-        /* for (String k: map.keySet())
-         {
-             
-            // LOG.info("key "+k+" "+map.get(k.toString()));
-             
-         }
-        */
+//         for (String k: map.keySet())
+//         {
+//             
+//             LOG.info("key "+k+" "+map.get(k));
+//             
+//         }
+        
          return u;
        
     }
