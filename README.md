@@ -29,6 +29,8 @@ properties provided by heroku, along with server.port=$PORT
 heroku login
 heroku deploy:jar target/google-cal-api-0.0.1-SNAPSHOT.jar --app google-cal-api
 ```
+URL: https://google-cal-api.herokuapp.com/
+
 ## Redirect Urls to set in the API manager 
 
 Api Manager [console](https://console.developers.google.com/apis/dashboard?project=event-image-update-system&authuser=1).
