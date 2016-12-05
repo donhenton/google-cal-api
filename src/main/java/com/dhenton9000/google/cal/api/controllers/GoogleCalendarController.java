@@ -5,6 +5,7 @@
  */
 package com.dhenton9000.google.cal.api.controllers;
 
+import com.dhenton9000.google.cal.api.UserInfo;
 import com.dhenton9000.google.rest.utils.RestUtil;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -16,6 +17,7 @@ import com.google.api.services.calendar.model.EventDateTime;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -32,6 +34,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -62,10 +65,13 @@ public class GoogleCalendarController {
     private static final Logger LOG = LoggerFactory.getLogger(GoogleCalendarController.class);
 
     @RequestMapping(value = "/googleAction", method = {RequestMethod.POST})
-    public ModelAndView googleAction(@RequestParam("dateString") String dateString, ModelAndView model) {
+    public ModelAndView googleAction(Principal principal, @RequestParam("dateString") String dateString, ModelAndView model) {
 
         //LOG.debug("dateString " + dateString);
         //11/15/2016
+         OAuth2Authentication auth = (OAuth2Authentication) principal;
+
+        UserInfo userInfo = (UserInfo) auth.getUserAuthentication().getPrincipal();
         SimpleDateFormat sdfInput = new SimpleDateFormat("MM/dd/yyyy");
         SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -121,6 +127,8 @@ public class GoogleCalendarController {
 
         model.addObject("appTitle", "Google Response");
         model.addObject("dateString", dateString);
+        model.addObject("userName",userInfo.getName());
+        
         model.addObject("result", res);
         model.setViewName("pages/googleAction");
 

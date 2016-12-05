@@ -9,14 +9,17 @@
      
  </style>
         
- <div class="well"> 
+ <div class="column50Left"> 
      
      <h3>Result</h3>
      <p>&nbsp;</p>
      <textarea id="result">${result}</textarea>
 </div>
 
-
+ <div class="column50Right"> 
+     
+      <p>User ${userName} should have a new calendar entry for ${dateString}</p>
+</div>
 
 
 <#include "../common/footer.ftl">
