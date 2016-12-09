@@ -29,6 +29,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+ 
 
 @SpringBootApplication
 @RestController
@@ -45,6 +46,9 @@ public class GoogleCalApplication extends WebSecurityConfigurerAdapter {
         map.put("name", principal.getName());
         return map;
     }
+    
+ 
+    
 
     /**
      * configure security
