@@ -29,6 +29,7 @@
                             <aside>File API</aside>
                             <ul>
                                 <li><a href="/fileList">Listing</a></li>
+                                <li><a href="/fileUploadPage">Upload</a></li>
                             </ul>
                         </li>
                         <li><a href="/graph">Graph</a></li>
