@@ -45,3 +45,6 @@ http://stackoverflow.com/questions/21094240/who-owns-calendars-created-by-servic
 
 
 https://github.com/skate056/spring-security-oauth2-google/blob/master/src/main/resources/security-context.xml
+
+//searching files
+https://developers.google.com/drive/v3/web/search-parameters
