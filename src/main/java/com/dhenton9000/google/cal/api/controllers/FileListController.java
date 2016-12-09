@@ -14,6 +14,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,6 +27,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -37,23 +39,23 @@ public class FileListController {
 
     @Autowired
     OAuth2RestTemplate oAuth2RestTemplate;
-
+    public static final String URL_BASE = "https://www.googleapis.com/drive/v3";
     private static final Logger LOG = LoggerFactory.getLogger(FileListController.class);
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-    private final static String FIELD_ITEMS =  "files(appProperties,createdTime,description,name,properties,webContentLink,webViewLink,fullFileExtension,mimeType)";
+    private final static String FIELD_ITEMS = "files(id,appProperties,createdTime,description,name,properties,webContentLink,webViewLink,fullFileExtension,mimeType)";
+
     @RequestMapping("/fileList")
     public ModelAndView fileList(ModelAndView model) {
 
-        String urlBase = "https://www.googleapis.com/drive/v3";
         URI url = null;
         String res = "didnt work";
         String filesOnlyQuery = "not mimeType contains 'folder'";
-        String uriString = urlBase;
+        String uriString = URL_BASE;
         try {
-            uriString = urlBase + "/files?fields="+URLEncoder.encode(FIELD_ITEMS,"UTF-8");
-            uriString = uriString + "&q="+URLEncoder.encode(filesOnlyQuery,"UTF-8");;
+            uriString = uriString + "/files?fields=" + URLEncoder.encode(FIELD_ITEMS, "UTF-8");
+            uriString = uriString + "&q=" + URLEncoder.encode(filesOnlyQuery, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
-            LOG.error("Encoding problem "+ex.getMessage());
+            LOG.error("Encoding problem " + ex.getMessage());
         }
         List<File> fileItems = new ArrayList<File>();
 
@@ -64,17 +66,16 @@ public class FileListController {
             res = "could not create uri " + uriString;
         }
         if (url != null) {
-            
+
             try {
 
-                HttpHeaders headers = new HttpHeaders();
-                headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-                headers.setContentType(MediaType.APPLICATION_JSON);
+                //HttpHeaders headers = new HttpHeaders();
+                //headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+                //headers.setContentType(MediaType.APPLICATION_JSON);
                 FileList fileList;
-                
-                
+
                 ResponseEntity<String> responseOut = oAuth2RestTemplate.getForEntity(url, String.class);
-               // LOG.info("a2");
+                // LOG.info("a2");
                 if (RestUtil.isError(responseOut.getStatusCode())) {
 
                     LOG.error("res is " + res);
@@ -85,7 +86,7 @@ public class FileListController {
 
                 }
 
-            } catch (Exception iex) {
+            } catch (IOException | RestClientException iex) {
 
                 res = "cannot do file list   problem " + iex.getMessage() + " " + iex.getClass().getName();
                 LOG.error(res);
@@ -96,7 +97,7 @@ public class FileListController {
         }
 
         model.addObject("result", res);
-        model.addObject("files",fileItems);
+        model.addObject("files", fileItems);
         model.addObject("appTitle", "Google File API");
         model.setViewName("pages/fileList");
         return model;
