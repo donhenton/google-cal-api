@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.calendar.model.Event;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import java.io.IOException;
@@ -22,23 +21,27 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import org.glassfish.jersey.client.JerseyClientBuilder;
+import org.glassfish.jersey.filter.LoggingFilter;
+import org.glassfish.jersey.media.multipart.BodyPart;
+import org.glassfish.jersey.media.multipart.MultiPart;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
+//import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.servlet.ModelAndView;
-
+ 
 /**
  *
  * @author dhenton
@@ -77,7 +80,7 @@ public class FileListController {
         if (url != null) {
 
             try {
-
+               
                 //HttpHeaders headers = new HttpHeaders();
                 //headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
                 //headers.setContentType(MediaType.APPLICATION_JSON);
@@ -112,28 +115,93 @@ public class FileListController {
         return model;
 
     }
-    
+
     /**
      * menu navigation to the upload page
+     *
      * @param model
-     * @return 
+     * @return
      */
     @RequestMapping("/fileUploadPage")
     public ModelAndView fileUpLoadPage(ModelAndView model) {
         String res = "";
-         model.addObject("result", res);
+        model.addObject("result", res);
 
         model.addObject("appTitle", "Google File Upload");
         model.setViewName("pages/fileUpload");
         return model;
     }
 
-    /**
-     * called when user clicks the submit button on the upload page
-     * @param model
-     * @return 
-     */
-    
+    private Client getJerseyClient() {
+        Client client = ClientBuilder.newBuilder()
+                .register(MultiPartFeature.class)
+                .build();
+        return client;
+    }
+
+    @RequestMapping("/fileUpload")
+    public ModelAndView fileUpLoad(ModelAndView model) {
+
+        //http://stackoverflow.com/questions/21102071/resttemplate-upload-image-file
+        String authToken = oAuth2RestTemplate.getAccessToken().getValue();
+        ImageGenerator gen = new ImageGenerator();
+        String res = "nothing happened";
+        HttpStatus statusCode = HttpStatus.OK;
+        URI url = null;
+
+        String uriString = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";
+
+        try {
+            url = new URI(uriString);
+        } catch (URISyntaxException ex) {
+            LOG.error("could not create uri " + uriString);
+            res = "could not create uri " + uriString;
+        }
+        if (url != null) {
+            try {
+
+                byte[] byteData = gen.createImage("png", "Get another job!!!!!!");
+                Client client = getJerseyClient();
+                
+                WebTarget target = client.target(uriString);
+                target.register(new LoggingFilter( ));
+                
+                final MultiPart multiPartEntity = new MultiPart()
+                        .bodyPart(new BodyPart( "{name: 'zzzfred.png'}", javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE)) 
+                        .bodyPart(new BodyPart(byteData,javax.ws.rs.core.MediaType.APPLICATION_OCTET_STREAM_TYPE) );
+                      //  
+                      LOG.info("hit 1");
+                Response response = target.request()
+                        .header("Authorization", "Bearer "+authToken)
+                        .post(Entity.entity(multiPartEntity, multiPartEntity.getMediaType()));
+                     LOG.info("hit 2");
+                
+                if (response.getStatus() != 200) {
+                   LOG.error("ERROR response is "+response.getStatus()+" "+response.getEntity().getClass().getName());
+                }
+                else
+                {
+                    LOG.info("response is "+response.getStatus()+" "+response.getEntity().getClass().getName());
+                }
+            } catch (Exception iex) {
+
+                res = "cannot do fileupload io problem " + iex.getMessage();
+                LOG.error(res);
+            }
+
+        } else {
+            res = "Url could not be parsed";
+        }
+
+        model.addObject("result", res);
+
+        model.addObject("appTitle", "Google File Upload");
+        model.setViewName("pages/fileUpload");
+        return model;
+    }
+    /*
+     
+     
     @RequestMapping("/fileUpload")
     public ModelAndView fileUpLoad(ModelAndView model) {
 
@@ -157,13 +225,12 @@ public class FileListController {
                 byte[] byteData = gen.createImage("png", "Get a job!!!!!!");
                 Resource resource = new ByteArrayResource(byteData);
 
-                 HttpHeaders headers = new HttpHeaders();
-                
+                HttpHeaders headers = new HttpHeaders();
+
                 headers.setContentType(MediaType.IMAGE_PNG);
                 headers.setContentLength(byteData.length);
-                
 
-                HttpEntity<Resource> infoEntity = new HttpEntity<Resource>(resource,headers);
+                HttpEntity<Resource> infoEntity = new HttpEntity<Resource>(resource, headers);
                 ResponseEntity<String> responseOut
                         = oAuth2RestTemplate.exchange(url,
                                 HttpMethod.POST, infoEntity, String.class);
@@ -187,13 +254,5 @@ public class FileListController {
         model.setViewName("pages/fileUpload");
         return model;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-
+     */
 }

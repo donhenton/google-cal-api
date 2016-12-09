@@ -48,3 +48,7 @@ https://github.com/skate056/spring-security-oauth2-google/blob/master/src/main/r
 
 //searching files
 https://developers.google.com/drive/v3/web/search-parameters
+
+
+
+http://stackoverflow.com/questions/28373130/how-to-set-content-type-for-the-file-in-multipart-upload-when-using-resttemplate
