@@ -23,6 +23,14 @@
 
 
                     <ul>
+                        
+                        <li>
+                            
+                            <aside>File API</aside>
+                            <ul>
+                                <li><a href="/fileList">Listing</a></li>
+                            </ul>
+                        </li>
                         <li><a href="/graph">Graph</a></li>
                         <li><a href="/logout">Logout</a></li>
                         <li><a href="/">Home</a></li>
