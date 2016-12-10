@@ -77,6 +77,8 @@ public class GoogleCalApplication extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    //@Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES) ????
+    //see https://jhasaket.blogspot.com/2014/09/securing-spring-mvc-application-using.html
     public OAuth2RestTemplate getRestClient() {
 
         OAuth2RestTemplate restTemplate = 
