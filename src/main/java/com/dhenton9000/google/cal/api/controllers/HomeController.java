@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
@@ -43,6 +44,9 @@ public class HomeController {
 
     @Autowired
     ConfigurableWebApplicationContext applicationContext;
+    
+     @Autowired
+    OAuth2ClientContext oauth2ClientContext;
 
     private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
 
@@ -73,6 +77,17 @@ public class HomeController {
     @RequestMapping("/")
     public ModelAndView home(Principal principal, ModelAndView model) {
 
+        OAuth2RefreshToken refreshToken 
+                = oauth2ClientContext.getAccessToken().getRefreshToken();
+        String rToken = "refresh is null";
+        if (refreshToken != null)
+        {
+            rToken = refreshToken.getValue();
+            
+        }
+        
+        
+        
         Date d = new Date();
         
         if (applicationContext != null) {
@@ -98,6 +113,7 @@ public class HomeController {
         model.addObject("initialDate", initialDate);
         model.addObject("totalUrl", totalUrl);
         model.addObject("userInfo", userInfo);
+        model.addObject("refreshToken",rToken);
         model.setViewName("pages/home");
         return model;
     }

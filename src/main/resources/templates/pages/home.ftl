@@ -3,6 +3,7 @@
         
  <div class="column50Left"> 
      
+     <p>refresh: ${refreshToken}</p>
      <p>${totalUrl}</p>
       
      <form  method="POST" action="/googleAction" class="form inline-form">
