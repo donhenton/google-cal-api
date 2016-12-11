@@ -37,6 +37,9 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableOAuth2Sso
 public class GoogleCalApplication extends WebSecurityConfigurerAdapter {
 
+    //this is session scoped so every user gets his own access token
+    //EnableOauth2Sso set this up
+    
     @Autowired
     OAuth2ClientContext oauth2ClientContext;
 
