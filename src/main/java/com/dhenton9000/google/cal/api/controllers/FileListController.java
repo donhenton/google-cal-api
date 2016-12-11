@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.calendar.model.Event;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import java.io.IOException;
@@ -21,27 +22,23 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import org.glassfish.jersey.client.JerseyClientBuilder;
-import org.glassfish.jersey.filter.LoggingFilter;
-import org.glassfish.jersey.media.multipart.BodyPart;
-import org.glassfish.jersey.media.multipart.MultiPart;
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-//import org.springframework.http.MediaType;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.servlet.ModelAndView;
- 
+
 /**
  *
  * @author dhenton
@@ -80,7 +77,7 @@ public class FileListController {
         if (url != null) {
 
             try {
-               
+
                 //HttpHeaders headers = new HttpHeaders();
                 //headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
                 //headers.setContentType(MediaType.APPLICATION_JSON);
@@ -132,21 +129,13 @@ public class FileListController {
         return model;
     }
 
-    private Client getJerseyClient() {
-        Client client = ClientBuilder.newBuilder()
-                .register(MultiPartFeature.class)
-                .build();
-        return client;
-    }
-
     @RequestMapping("/fileUpload")
     public ModelAndView fileUpLoad(ModelAndView model) {
 
         //http://stackoverflow.com/questions/21102071/resttemplate-upload-image-file
-        String authToken = oAuth2RestTemplate.getAccessToken().getValue();
         ImageGenerator gen = new ImageGenerator();
         String res = "nothing happened";
-        HttpStatus statusCode = HttpStatus.OK;
+
         URI url = null;
 
         String uriString = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";
@@ -160,32 +149,44 @@ public class FileListController {
         if (url != null) {
             try {
 
-                byte[] byteData = gen.createImage("png", "Get another job!!!!!!");
-                Client client = getJerseyClient();
                 
-                WebTarget target = client.target(uriString);
-                target.register(new LoggingFilter( ));
+
+                //the parts of the upload
+                MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+                //the main header
+
+                HttpHeaders mainHeaders = new HttpHeaders();
+                mainHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
                 
-                final MultiPart multiPartEntity = new MultiPart()
-                        .bodyPart(new BodyPart( "{name: 'zzzfred.png'}", javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE)) 
-                        .bodyPart(new BodyPart(byteData,javax.ws.rs.core.MediaType.APPLICATION_OCTET_STREAM_TYPE) );
-                      //  
-                      LOG.info("hit 1");
-                Response response = target.request()
-                        .header("Authorization", "Bearer "+authToken)
-                        .post(Entity.entity(multiPartEntity, multiPartEntity.getMediaType()));
-                     LOG.info("hit 2");
+                //the meta data
+                MultiValueMap<String, String> metaHeaders = new LinkedMultiValueMap<String, String>();
+                metaHeaders.set("Content-type","application/json");
+                String metaData = "{name: \"fred1000.png\"}";
+                HttpEntity metaEntity = new HttpEntity(metaData,metaHeaders);
+               
+                //the image data
+                MultiValueMap<String, String> imageHeaders = new LinkedMultiValueMap<String, String>();
+                imageHeaders.set("Content-type","image/png");
+                byte[] byteData = gen.createImage("png", "Get a job!!!!!!");
+                Resource imageResource = new ByteArrayResource(byteData);
+                HttpEntity imageEntity = new HttpEntity(imageResource,imageHeaders);
+                 
                 
-                if (response.getStatus() != 200) {
-                   LOG.error("ERROR response is "+response.getStatus()+" "+response.getEntity().getClass().getName());
-                }
-                else
-                {
-                    LOG.info("response is "+response.getStatus()+" "+response.getEntity().getClass().getName());
+                parts.add("metaData",metaEntity);
+                parts.add("image", imageEntity);
+                 
+
+                HttpEntity<MultiValueMap<String, Object>> infoEntity = new HttpEntity<MultiValueMap<String, Object>>(parts, mainHeaders);
+                ResponseEntity<String> responseOut
+                        = oAuth2RestTemplate.exchange(url,
+                                HttpMethod.POST, infoEntity, String.class);
+                res = responseOut.getBody();
+                if (RestUtil.isError(responseOut.getStatusCode())) {
+                    LOG.error("res is " + res);
                 }
             } catch (Exception iex) {
 
-                res = "cannot do fileupload io problem " + iex.getMessage();
+                res = "cannot do calendar list io problem " + iex.getMessage();
                 LOG.error(res);
             }
 
