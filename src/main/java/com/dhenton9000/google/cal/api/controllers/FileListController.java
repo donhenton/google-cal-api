@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.calendar.model.Event;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import java.io.IOException;
@@ -22,11 +21,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -78,9 +75,6 @@ public class FileListController {
 
             try {
 
-                //HttpHeaders headers = new HttpHeaders();
-                //headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-                //headers.setContentType(MediaType.APPLICATION_JSON);
                 FileList fileList;
 
                 ResponseEntity<String> responseOut = oAuth2RestTemplate.getForEntity(url, String.class);
@@ -176,7 +170,8 @@ public class FileListController {
                 parts.add("image", imageEntity);
                  
 
-                HttpEntity<MultiValueMap<String, Object>> infoEntity = new HttpEntity<MultiValueMap<String, Object>>(parts, mainHeaders);
+                HttpEntity<MultiValueMap<String, Object>> infoEntity 
+                        = new HttpEntity<MultiValueMap<String, Object>>(parts, mainHeaders);
                 ResponseEntity<String> responseOut
                         = oAuth2RestTemplate.exchange(url,
                                 HttpMethod.POST, infoEntity, String.class);
@@ -186,7 +181,7 @@ public class FileListController {
                 }
             } catch (Exception iex) {
 
-                res = "cannot do calendar list io problem " + iex.getMessage();
+                res = "cannot do file upload  problem " + iex.getMessage();
                 LOG.error(res);
             }
 
