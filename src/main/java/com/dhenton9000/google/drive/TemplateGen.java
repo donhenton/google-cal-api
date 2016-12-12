@@ -1,5 +1,5 @@
 
-package com.dhenton9000.docx4j.sandbox;
+package com.dhenton9000.google.drive;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 public class TemplateGen {
 
     private static final Logger LOG = LoggerFactory.getLogger(TemplateGen.class);
+    public static final String TEMPLATE_PATH = "/docx_templates/demo_template.docx";
 
     public byte[] replaceToByteArray(Properties replacementProps, String classToTemplate)
             throws JAXBException, Docx4JException, UnsupportedEncodingException {

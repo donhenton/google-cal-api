@@ -5,7 +5,10 @@
  */
 package com.dhenton9000.google.cal.api.controllers;
 
+import com.dhenton9000.google.cal.api.ApptModel;
 import com.dhenton9000.google.cal.api.image.ImageGenerator;
+import com.dhenton9000.google.drive.GoogleDriveWriter;
+import com.dhenton9000.google.drive.TemplateGen;
 import com.dhenton9000.google.rest.utils.RestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +23,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -33,6 +39,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -123,7 +132,7 @@ public class FileListController {
         return model;
     }
 
-    @RequestMapping("/fileUpload")
+    /*
     public ModelAndView fileUpLoad(ModelAndView model) {
 
         //http://stackoverflow.com/questions/21102071/resttemplate-upload-image-file
@@ -195,19 +204,17 @@ public class FileListController {
         model.setViewName("pages/fileUpload");
         return model;
     }
-    /*
-     
-     
-    @RequestMapping("/fileUpload")
-    public ModelAndView fileUpLoad(ModelAndView model) {
+  
+     */
+    @RequestMapping(path = "/fileUpload", method = RequestMethod.POST)
+    public ModelAndView fileUpLoad(@ModelAttribute("apptModel") ApptModel apptModel, BindingResult result, ModelAndView model) {
 
         //http://stackoverflow.com/questions/21102071/resttemplate-upload-image-file
-        ImageGenerator gen = new ImageGenerator();
         String res = "nothing happened";
-
+        LOG.debug("apptModel " + apptModel);
         URI url = null;
 
-        String uriString = "https://www.googleapis.com/upload/drive/v3/files?uploadType=media";
+        String uriString = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";
 
         try {
             url = new URI(uriString);
@@ -217,16 +224,26 @@ public class FileListController {
         }
         if (url != null) {
             try {
+                GoogleDriveWriter writer = new GoogleDriveWriter();
+                TemplateGen gen = new TemplateGen();
+                Properties replacementProps = new Properties();
+                LocalDate ld = LocalDate.now();
+                String dateField = ld.format(DateTimeFormatter.ISO_LOCAL_DATE);
+                
+                replacementProps.setProperty("TO_FIELD", apptModel.getToField());
+                replacementProps.setProperty("FROM_FIELD", apptModel.getFromField());
+                replacementProps.setProperty("DATE_FIELD", dateField);
+                replacementProps.setProperty("TEXT_FIELD", apptModel.getTextField());
+                replacementProps.setProperty("HYPERLINK_HREF", "http://www.yahoo.com");
+                replacementProps.setProperty("HYPERLINK_TEXT", "My cool link");
 
-                byte[] byteData = gen.createImage("png", "Get a job!!!!!!");
-                Resource resource = new ByteArrayResource(byteData);
+                byte[] byteData
+                        = gen.replaceToByteArray(replacementProps, TemplateGen.TEMPLATE_PATH);
+                String jsonMetaData = "{name: \"test.docx\"}";
 
-                HttpHeaders headers = new HttpHeaders();
+                HttpEntity<MultiValueMap<String, Object>> infoEntity
+                        = writer.produceEntity(byteData, jsonMetaData, GoogleDriveWriter.DOCX_MEDIA_TYPE);
 
-                headers.setContentType(MediaType.IMAGE_PNG);
-                headers.setContentLength(byteData.length);
-
-                HttpEntity<Resource> infoEntity = new HttpEntity<Resource>(resource, headers);
                 ResponseEntity<String> responseOut
                         = oAuth2RestTemplate.exchange(url,
                                 HttpMethod.POST, infoEntity, String.class);
@@ -234,9 +251,10 @@ public class FileListController {
                 if (RestUtil.isError(responseOut.getStatusCode())) {
                     LOG.error("res is " + res);
                 }
+
             } catch (Exception iex) {
 
-                res = "cannot do calendar list io problem " + iex.getMessage();
+                res = "cannot do file upload  problem " + iex.getMessage();
                 LOG.error(res);
             }
 
@@ -245,10 +263,10 @@ public class FileListController {
         }
 
         model.addObject("result", res);
-
+        model.addObject("apptModel", apptModel);
         model.addObject("appTitle", "Google File Upload");
         model.setViewName("pages/fileUpload");
         return model;
     }
-     */
+
 }
