@@ -32,9 +32,9 @@ import org.slf4j.LoggerFactory;
  * 
  * 
  */
-public class TemplateGen {
+public class TemplateGenerator {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TemplateGen.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TemplateGenerator.class);
     public static final String TEMPLATE_PATH = "/docx_templates/demo_template.docx";
 
     public byte[] replaceToByteArray(Properties replacementProps, String classToTemplate)
@@ -199,7 +199,7 @@ public class TemplateGen {
 /*
     public static void zzzzzzmthing(String[] args) throws Exception {
 
-        TemplateGen gen = new TemplateGen();
+        TemplateGenerator gen = new TemplateGenerator();
         LocalDate ld = LocalDate.now();
         String dateField = ld.format(DateTimeFormatter.ISO_LOCAL_DATE);
 

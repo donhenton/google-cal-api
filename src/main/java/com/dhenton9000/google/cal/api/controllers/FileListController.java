@@ -7,7 +7,7 @@ package com.dhenton9000.google.cal.api.controllers;
 
 import com.dhenton9000.google.cal.api.ApptModel;
 import com.dhenton9000.google.drive.GoogleDriveWriter;
-import com.dhenton9000.google.drive.TemplateGen;
+import com.dhenton9000.google.drive.TemplateGenerator;
 import com.dhenton9000.google.rest.utils.RestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,7 +146,7 @@ public class FileListController {
         if (url != null) {
             try {
                 GoogleDriveWriter writer = new GoogleDriveWriter();
-                TemplateGen gen = new TemplateGen();
+                TemplateGenerator gen = new TemplateGenerator();
                 Properties replacementProps = new Properties();
                 LocalDate ld = LocalDate.now();
                 String dateField = ld.format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -160,7 +160,7 @@ public class FileListController {
                 String fileName = apptModel.getFileName();
 
                 byte[] byteData
-                        = gen.replaceToByteArray(replacementProps, TemplateGen.TEMPLATE_PATH);
+                        = gen.replaceToByteArray(replacementProps, TemplateGenerator.TEMPLATE_PATH);
                 String jsonMetaData = "{name: \""+fileName+".docx\"}";
 
                 HttpEntity<MultiValueMap<String, Object>> infoEntity
