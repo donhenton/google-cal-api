@@ -6,6 +6,7 @@
 package com.dhenton9000.google.cal.api.controllers;
 
 import com.dhenton9000.google.cal.api.ApptModel;
+import com.dhenton9000.google.drive.FileReturnInfo;
 import com.dhenton9000.google.drive.GoogleDriveWriter;
 import com.dhenton9000.google.drive.TemplateGenerator;
 import com.dhenton9000.google.rest.utils.RestUtil;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.drive.Drive.Files;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import java.io.IOException;
@@ -58,8 +60,11 @@ public class FileListController {
 
         URI url = null;
         String res = "didnt work";
-        String filesOnlyQuery = "not mimeType contains 'folder' and trashed = 'false";
+        String filesOnlyQuery = "(not mimeType contains 'folder') and trashed = false ";
         String uriString = "https://www.googleapis.com/drive/v3";
+        
+         
+        
         try {
             uriString = uriString + "/files?fields=" + URLEncoder.encode(FIELD_ITEMS, "UTF-8");
             uriString = uriString + "&q=" + URLEncoder.encode(filesOnlyQuery, "UTF-8");
@@ -84,7 +89,7 @@ public class FileListController {
                 // LOG.info("a2");
                 if (RestUtil.isError(responseOut.getStatusCode())) {
 
-                    LOG.error("res is " + res);
+                    LOG.error("res is " + res+" "+responseOut.getBody());
                 } else {
                     String dataIn = responseOut.getBody();
                     fileList = JSON_FACTORY.fromString(dataIn, FileList.class);
@@ -172,6 +177,17 @@ public class FileListController {
                 res = responseOut.getBody();
                 if (RestUtil.isError(responseOut.getStatusCode())) {
                     LOG.error("res is " + res);
+                }
+                else
+                {
+                   //TODO: write the calendar item,
+                   //obtain the file id to use as an attachment
+                    
+                    FileReturnInfo fileResult =  JSON_FACTORY.fromString(res, FileReturnInfo.class);
+                    String urlForFile = "https://www.googleapis.com/drive/v3/files/"+fileResult.getId() +"?fields=id,createdTime,webViewLink"  ;
+                    ResponseEntity<String> responseFile = oAuth2RestTemplate.getForEntity(urlForFile, String.class);
+                     LOG.debug("zzz "+responseFile.getBody());
+                    
                 }
 
             } catch (Exception iex) {
