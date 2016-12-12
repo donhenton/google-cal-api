@@ -14,6 +14,7 @@ public class ApptModel {
     private String toField ;
     private String fromField;
     private String textField ;
+    private String fileName = "test";
 
     /**
      * @return the toField
@@ -60,6 +61,20 @@ public class ApptModel {
     @Override
     public String toString() {
         return "ApptModel{" + "toField=" + toField + ", fromField=" + fromField + ", textField=" + textField + '}';
+    }
+
+    /**
+     * @return the fileName
+     */
+    public String getFileName() {
+        return fileName;
+    }
+
+    /**
+     * @param fileName the fileName to set
+     */
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
     
     

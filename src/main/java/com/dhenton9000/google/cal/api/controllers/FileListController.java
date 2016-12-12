@@ -6,7 +6,6 @@
 package com.dhenton9000.google.cal.api.controllers;
 
 import com.dhenton9000.google.cal.api.ApptModel;
-import com.dhenton9000.google.cal.api.image.ImageGenerator;
 import com.dhenton9000.google.drive.GoogleDriveWriter;
 import com.dhenton9000.google.drive.TemplateGen;
 import com.dhenton9000.google.rest.utils.RestUtil;
@@ -29,15 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -64,7 +58,7 @@ public class FileListController {
 
         URI url = null;
         String res = "didnt work";
-        String filesOnlyQuery = "not mimeType contains 'folder'";
+        String filesOnlyQuery = "not mimeType contains 'folder' and trashed = 'false";
         String uriString = "https://www.googleapis.com/drive/v3";
         try {
             uriString = uriString + "/files?fields=" + URLEncoder.encode(FIELD_ITEMS, "UTF-8");
@@ -132,80 +126,7 @@ public class FileListController {
         return model;
     }
 
-    /*
-    public ModelAndView fileUpLoad(ModelAndView model) {
-
-        //http://stackoverflow.com/questions/21102071/resttemplate-upload-image-file
-        ImageGenerator gen = new ImageGenerator();
-        String res = "nothing happened";
-
-        URI url = null;
-
-        String uriString = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";
-
-        try {
-            url = new URI(uriString);
-        } catch (URISyntaxException ex) {
-            LOG.error("could not create uri " + uriString);
-            res = "could not create uri " + uriString;
-        }
-        if (url != null) {
-            try {
-
-                
-
-                //the parts of the upload
-                MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
-                //the main header
-
-                HttpHeaders mainHeaders = new HttpHeaders();
-                mainHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-                
-                //the meta data
-                MultiValueMap<String, String> metaHeaders = new LinkedMultiValueMap<String, String>();
-                metaHeaders.set("Content-type","application/json");
-                String metaData = "{name: \"fred1000.png\"}";
-                HttpEntity metaEntity = new HttpEntity(metaData,metaHeaders);
-               
-                //the image data
-                MultiValueMap<String, String> imageHeaders = new LinkedMultiValueMap<String, String>();
-                imageHeaders.set("Content-type","image/png");
-                byte[] byteData = gen.createImage("png", "Get a job!!!!!!");
-                Resource imageResource = new ByteArrayResource(byteData);
-                HttpEntity imageEntity = new HttpEntity(imageResource,imageHeaders);
-                 
-                
-                parts.add("metaData",metaEntity);
-                parts.add("image", imageEntity);
-                 
-
-                HttpEntity<MultiValueMap<String, Object>> infoEntity 
-                        = new HttpEntity<MultiValueMap<String, Object>>(parts, mainHeaders);
-                ResponseEntity<String> responseOut
-                        = oAuth2RestTemplate.exchange(url,
-                                HttpMethod.POST, infoEntity, String.class);
-                res = responseOut.getBody();
-                if (RestUtil.isError(responseOut.getStatusCode())) {
-                    LOG.error("res is " + res);
-                }
-            } catch (Exception iex) {
-
-                res = "cannot do file upload  problem " + iex.getMessage();
-                LOG.error(res);
-            }
-
-        } else {
-            res = "Url could not be parsed";
-        }
-
-        model.addObject("result", res);
-
-        model.addObject("appTitle", "Google File Upload");
-        model.setViewName("pages/fileUpload");
-        return model;
-    }
   
-     */
     @RequestMapping(path = "/fileUpload", method = RequestMethod.POST)
     public ModelAndView fileUpLoad(@ModelAttribute("apptModel") ApptModel apptModel, BindingResult result, ModelAndView model) {
 
@@ -236,10 +157,11 @@ public class FileListController {
                 replacementProps.setProperty("TEXT_FIELD", apptModel.getTextField());
                 replacementProps.setProperty("HYPERLINK_HREF", "http://www.yahoo.com");
                 replacementProps.setProperty("HYPERLINK_TEXT", "My cool link");
+                String fileName = apptModel.getFileName();
 
                 byte[] byteData
                         = gen.replaceToByteArray(replacementProps, TemplateGen.TEMPLATE_PATH);
-                String jsonMetaData = "{name: \"test.docx\"}";
+                String jsonMetaData = "{name: \""+fileName+".docx\"}";
 
                 HttpEntity<MultiValueMap<String, Object>> infoEntity
                         = writer.produceEntity(byteData, jsonMetaData, GoogleDriveWriter.DOCX_MEDIA_TYPE);

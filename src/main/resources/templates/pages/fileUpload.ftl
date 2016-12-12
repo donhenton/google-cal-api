@@ -34,6 +34,10 @@
                     <tr><th><label for="fromField">From Email:</label></th><td>
              
                             <input type="text"  name="fromField"  size="35" id="fromField"></td></tr>
+                    <tr><th><label for="fileName">FileName (no ext):</label></th><td>
+             
+                            <input type="text"  name="fileName"  size="35" id="fileName"></td></tr>
+
 
                     <tr><th><label for="textField">Text:</label></th>
                         <td>
