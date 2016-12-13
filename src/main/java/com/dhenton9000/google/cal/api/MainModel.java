@@ -23,8 +23,8 @@ public class MainModel {
 
     public Properties getProperties() {
         Properties replacementProps = new Properties();
-        replacementProps.setProperty("FIRST_ATTENDEE", getFirstAttendee());
-        replacementProps.setProperty("SECOND_ATTENDEE", getSecondAttendee());
+        replacementProps.setProperty("ATTENDEES", getFirstAttendee()
+                +","+getSecondAttendee());         
         replacementProps.setProperty("DATE_FIELD", getDateField());
         replacementProps.setProperty("TEXT_FIELD",  getText());
         replacementProps.setProperty("HYPERLINK_HREF", getLinkValue());

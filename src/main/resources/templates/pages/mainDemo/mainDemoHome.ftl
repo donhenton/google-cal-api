@@ -17,7 +17,7 @@
 
 
 
-    <form  method="POST" action="/googleAction" class="form well">
+    <form  method="POST" action="/mainDemoPost" class="form well">
 
 
         <table class="table" >
