@@ -5,31 +5,19 @@
  */
 package com.dhenton9000.google.cal.api.controllers;
 
+import com.dhenton9000.google.cal.api.EventCreator;
 import com.dhenton9000.google.cal.api.UserInfo;
-import com.dhenton9000.google.rest.utils.RestUtil;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.Event.Source;
-import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.EventAttachment;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.Principal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
@@ -69,48 +57,23 @@ public class GoogleCalendarController {
          OAuth2Authentication auth = (OAuth2Authentication) principal;
 
         UserInfo userInfo = (UserInfo) auth.getUserAuthentication().getPrincipal();
-        SimpleDateFormat sdfInput = new SimpleDateFormat("MM/dd/yyyy");
-        SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date d = sdfInput.parse(dateString);
-            dateString = sdfOutput.format(d);
-            // LOG.debug("dateString " + dateString);
-        } catch (ParseException ex) {
-            // LOG.error("could not parse " + dateString);
-        }
-
-        String urlBase = "https://www.googleapis.com/calendar/v3";
-        URI url = null;
-        String res = "didnt work";
-        String uriString = urlBase + "/calendars/primary/events";
-
-        try {
-            url = new URI(uriString);
-        } catch (URISyntaxException ex) {
-            LOG.error("could not create uri " + uriString);
-            res = "could not create uri " + uriString;
-        }
-        if (url != null) {
-
-            try {
-                Event evs = makeEvent(dateString);
-
-                String input = evs.toPrettyString();
-                //  LOG.debug(input);
-
-                HttpHeaders headers = new HttpHeaders();
-                headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                HttpEntity<String> infoEntity = new HttpEntity<String>(input, headers);
-                ResponseEntity<String> responseOut
-                        = oAuth2RestTemplate.exchange(url,
-                                HttpMethod.POST, infoEntity, String.class);
-                res = responseOut.getBody();
-
-                if (RestUtil.isError(responseOut.getStatusCode())) {
-
-                    LOG.error("res is " + res);
-                }
+            String res = "started";
+            try 
+            {
+                EventCreator evCreator = new EventCreator(oAuth2RestTemplate);
+                List<String> attendeeEmails = new ArrayList<String>();
+                attendeeEmails.add("donhenton@gmail.com");
+                attendeeEmails.add("donaby.henton@networkedinsights.com");
+                List<EventAttachment> attachments = new ArrayList<EventAttachment>();
+                
+                EventAttachment eA = new EventAttachment();
+                eA.setTitle("stuff to click on");
+                eA.setFileUrl("https://docs.google.com/document/d/1fNUs_GR4sh7EoKWNKewG4LxOBXafM2FmE10NCM7GjBs/edit?usp=drivesdk");
+                eA.setMimeType("application/vnd.google-apps.document");
+                attachments.add(eA);
+                eA.setFileId("1fNUs_GR4sh7EoKWNKewG4LxOBXafM2FmE10NCM7GjBs");
+                
+                res = evCreator.createEvent(dateString, attendeeEmails, attachments);
 
             } catch (IOException iex) {
 
@@ -118,9 +81,7 @@ public class GoogleCalendarController {
                 LOG.error(res);
             }
 
-        } else {
-            LOG.error("url null");
-        }
+         
 
         model.addObject("appTitle", "Google Response");
         model.addObject("dateString", dateString);
@@ -141,54 +102,5 @@ public class GoogleCalendarController {
         return serverUrl + portInfo;
     }
 
-    private Event makeEvent(String dateString) {
-        Event event = new Event() 
-         .setSummary("Report Waiting")
-          .setLocation("Networked Insights")
-          .setDescription("A report is waiting. Click on the source link above to access it.");
-        event.setFactory(JSON_FACTORY);
-        DateTime startDateTime = new DateTime(dateString + "T09:00:00-07:00");
-        // DateTime startDateTime = new DateTime("2016-11-18T09:00:00-07:00");
-        EventDateTime start = new EventDateTime()
-                .setDateTime(startDateTime)
-                .setTimeZone("America/Los_Angeles");
-        event.setStart(start);
-
-        DateTime endDateTime = new DateTime(dateString + "T09:15:00-07:00");
-        // DateTime endDateTime = new DateTime("2016-11-19T09:00:00-07:00");
-        EventDateTime end = new EventDateTime()
-                .setDateTime(endDateTime)
-                .setTimeZone("America/Los_Angeles");
-        event.setEnd(end);
-
-       
-
-        LOG.info("hit the prod");
-
-        // }
-//        String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
-//        event.setRecurrence(Arrays.asList(recurrence));
-/*
-        EventAttendee[] attendees = new EventAttendee[]{
-            new EventAttendee().setEmail("lpage@example.com"),
-            new EventAttendee().setEmail("sbrin@example.com"),};
-        event.setAttendees(Arrays.asList(attendees));
-         */
-         Source source = new Source();
-         source.setTitle("Click on this link for the report");
-         source.setUrl(computeGraphURL() + "/graph");
-         event.setSource(source);
-
-        /*
-        EventReminder[] reminderOverrides = new EventReminder[]{
-            new EventReminder().setMethod("email").setMinutes(24 * 60),
-            new EventReminder().setMethod("popup").setMinutes(10),};
-        Event.Reminders reminders = new Event.Reminders()
-                .setUseDefault(false)
-                .setOverrides(Arrays.asList(reminderOverrides));
-        event.setReminders(reminders);
-         */
-        return event;
-
-    }
+    
 }
