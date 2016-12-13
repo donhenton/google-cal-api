@@ -56,7 +56,9 @@ public class FileListController {
     private static final Logger LOG = LoggerFactory.getLogger(FileListController.class);
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private final static String FIELD_ITEMS = "files(id,appProperties,createdTime,description,name,properties,webContentLink,webViewLink,fullFileExtension,mimeType)";
+    private  static final String TEMPLATE_PATH = "/docx_templates/demo_template.docx";
 
+    
     @RequestMapping("/fileList")
     public ModelAndView fileList(ModelAndView model) {
 
@@ -167,7 +169,7 @@ public class FileListController {
                 String fileName = apptModel.getFileName();
 
                 byte[] byteData
-                        = gen.replaceToByteArray(replacementProps, TemplateGenerator.TEMPLATE_PATH);
+                        = gen.replaceToByteArray(replacementProps, TEMPLATE_PATH);
                 String jsonMetaData = "{name: \""+fileName+".docx\"}";
 
                 HttpEntity<MultiValueMap<String, Object>> infoEntity

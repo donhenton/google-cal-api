@@ -42,7 +42,8 @@ public class EventCreator {
 
     private static final Logger LOG = LoggerFactory.getLogger(EventCreator.class);
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-
+    public static final SimpleDateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+    public static final SimpleDateFormat OUTPUT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     
     private final OAuth2RestTemplate oAuth2RestTemplate;
     
@@ -107,11 +108,10 @@ public class EventCreator {
     public String createEvent(String dateString, 
             List<String> attendeeEmails,List<EventAttachment> attachments) throws IOException {
 
-        SimpleDateFormat sdfInput = new SimpleDateFormat("MM/dd/yyyy");
-        SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd");
+        
         try {
-            Date d = sdfInput.parse(dateString);
-            dateString = sdfOutput.format(d);
+            Date d = INPUT_DATE_FORMAT.parse(dateString);
+            dateString = OUTPUT_DATE_FORMAT.format(d);
             // LOG.debug("dateString " + dateString);
         } catch (ParseException ex) {
             // LOG.error("could not parse " + dateString);

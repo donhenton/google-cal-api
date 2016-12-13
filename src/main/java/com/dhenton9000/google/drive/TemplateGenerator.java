@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -35,7 +33,7 @@ import org.slf4j.LoggerFactory;
 public class TemplateGenerator {
 
     private static final Logger LOG = LoggerFactory.getLogger(TemplateGenerator.class);
-    public static final String TEMPLATE_PATH = "/docx_templates/demo_template.docx";
+   // public static final String TEMPLATE_PATH = "/docx_templates/demo_template.docx";
 
     public byte[] replaceToByteArray(Properties replacementProps, String classToTemplate)
             throws JAXBException, Docx4JException, UnsupportedEncodingException {

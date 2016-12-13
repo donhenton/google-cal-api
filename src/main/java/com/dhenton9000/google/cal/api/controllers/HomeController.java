@@ -57,12 +57,7 @@ public class HomeController {
 
     }
 
-    @RequestMapping("/graph")
-    public String graph(Model model) {
-        model.addAttribute("appTitle", "Graph");
-        return "pages/graph";
-
-    }
+   
 
     /*
     

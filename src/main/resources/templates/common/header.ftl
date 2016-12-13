@@ -23,7 +23,7 @@
 
 
                     <ul>
-                        
+                        <li><a href="/mainDemo">Main Demo</a></li>
                         <li>
                             
                             <aside>File API</aside>
@@ -32,7 +32,7 @@
                                 <li><a href="/fileUploadPage">Upload</a></li>
                             </ul>
                         </li>
-                        <li><a href="/graph">Graph</a></li>
+                         
                         <li><a href="/logout">Logout</a></li>
                         <li><a href="/">Home</a></li>
                         </ul>    
