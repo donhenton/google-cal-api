@@ -13,11 +13,11 @@ import java.util.Properties;
  */
 public class MainModel {
 
-    private String firstAttendee;
-    private String secondAttendee;
+    private String firstAttendee = "donhenton@gmail.com";
+    private String secondAttendee = "ddigital9000@gmail.com";
     private String fileName = "test";
     private String dateField;
-    private String text = "";
+    private String text = "some demo text";
     private String linkValue = "http://www.yahoo.com";
     private String linkText = "Yahoo!!!";
 

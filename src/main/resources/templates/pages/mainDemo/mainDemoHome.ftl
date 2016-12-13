@@ -28,17 +28,17 @@
                </tr>
                <tr>
                <td><label for="firstAttendee">Attendee #1</label></td>
-               <td> <input type="text" size="30"
+               <td> <input type="text" size="30"  value="${mainModel.firstAttendee}"
                         name="firstAttendee" id="firstAttendee"></td>
                </tr>
                 <tr>
                <td><label for="secondAttendee">Attendee #2</label></td>
-               <td> <input type="text" size="30"
+               <td> <input type="text" size="30" value="${mainModel.secondAttendee}"
                         name="secondAttendee" id="secondAttendee"></td>
                </tr>
                  <tr>
                <td><label for="fileName">File Name</label></td>
-               <td> <input type="text" size="30"
+               <td> <input type="text" size="30" value="${mainModel.fileName}"
                         name="fileName" id="fileName"></td>
                </tr>
                <tr>
@@ -54,7 +54,7 @@
                 <tr>
                <td><label for="linkText">Text</td>
                <td>
-                   <textarea id="text" name="text"></textarea>    
+                   <textarea id="text" name="text">${mainModel.text}</textarea>    
                    
                </tr>
                
