@@ -10,6 +10,7 @@ import com.dhenton9000.google.drive.FileReturnInfo;
 import com.dhenton9000.google.drive.GoogleDriveWriter;
 import com.dhenton9000.google.drive.TemplateGenerator;
 import com.dhenton9000.google.rest.utils.RestUtil;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -185,8 +187,10 @@ public class FileListController {
                     
                     FileReturnInfo fileResult =  JSON_FACTORY.fromString(res, FileReturnInfo.class);
                     String urlForFile = "https://www.googleapis.com/drive/v3/files/"+fileResult.getId() +"?fields=id,createdTime,webViewLink"  ;
-                    ResponseEntity<String> responseFile = oAuth2RestTemplate.getForEntity(urlForFile, String.class);
-                     LOG.debug("zzz "+responseFile.getBody());
+                    ResponseEntity<JsonNode> responseFile = oAuth2RestTemplate.getForEntity(urlForFile, JsonNode.class);
+                    JsonNode bodyObj = responseFile.getBody();
+                    LOG.debug("zzz "+bodyObj.get("webViewLink"));
+                    
                     
                 }
 
