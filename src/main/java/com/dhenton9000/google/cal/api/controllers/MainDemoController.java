@@ -5,7 +5,6 @@
  */
 package com.dhenton9000.google.cal.api.controllers;
 
-import com.dhenton9000.google.cal.api.ApptModel;
 import com.dhenton9000.google.cal.api.EventCreator;
 import com.dhenton9000.google.cal.api.MainModel;
 import com.dhenton9000.google.drive.FileReturnInfo;
@@ -16,27 +15,20 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.model.EventAttachment;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -69,7 +61,8 @@ public class MainDemoController {
     }
 
     @RequestMapping(path = "/mainDemoPost", method = RequestMethod.POST)
-    public ModelAndView mainDemoPost(@ModelAttribute("mainModel") MainModel apptModel, BindingResult result, ModelAndView model) {
+    public ModelAndView mainDemoPost(@ModelAttribute("mainModel") MainModel apptModel, 
+            BindingResult result, ModelAndView model) {
 
         //http://stackoverflow.com/questions/21102071/resttemplate-upload-image-file
         String res = "nothing happened";
