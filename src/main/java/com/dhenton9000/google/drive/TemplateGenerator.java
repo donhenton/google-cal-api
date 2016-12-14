@@ -117,7 +117,9 @@ public class TemplateGenerator {
 
         for (Object text : texts) {
             Text textElement = (Text) text;
-            if (textElement.getValue().equals(placeHolderText)) {
+            LOG.debug(String.format("trying replacing %s into '%s'",placeHolderText,textElement.getValue()));
+            if (textElement.getValue().toUpperCase().contains(placeHolderText)) {
+                LOG.debug("did replace "+placeHolderText);
                 textElement.setValue(replacementValue);
             }
         }

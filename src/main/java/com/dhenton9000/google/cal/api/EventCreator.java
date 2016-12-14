@@ -24,28 +24,33 @@ import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.stereotype.Component;
 
 /**
  *
  * @author dhenton
  */
-@Component
+
 public class EventCreator {
 
     private static final Logger LOG = LoggerFactory.getLogger(EventCreator.class);
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     public static final SimpleDateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
     public static final SimpleDateFormat OUTPUT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private String timeZone = "America/Los_Angeles";
+    private String timeZoneOffset = "-07:00";
+    private String summary = "Summary Info";
+    private String location = "Los Angeles";
+    private String description = "Description";
+    private String startTime = "09:15:00";
+    private String endTime = "10:15:00";
     
-    private final OAuth2RestTemplate oAuth2RestTemplate;
+    private OAuth2RestTemplate oAuth2RestTemplate;
     
     public EventCreator(OAuth2RestTemplate t)
     {
@@ -56,15 +61,15 @@ public class EventCreator {
             List<String> attendeeEmails,
             List<EventAttachment> attachments) {
         Event event = new Event()
-                .setSummary("Report Waiting")
-                .setLocation("Networked Insights")
-                .setDescription("A report is waiting. Click on the source link above to access it.");
+                .setSummary(getSummary())
+                .setLocation(getLocation())
+                .setDescription(getDescription());
         event.setFactory(JSON_FACTORY);
-        DateTime startDateTime = new DateTime(dateString + "T09:00:00-07:00");
+        DateTime startDateTime = new DateTime(dateString + "T"+getStartTime()+"-07:00");
 
         EventDateTime start = new EventDateTime()
                 .setDateTime(startDateTime)
-                .setTimeZone("America/Los_Angeles");
+                .setTimeZone(getTimeZone());
         event.setStart(start);
         ArrayList<EventAttendee> eventAttendees = new ArrayList<EventAttendee>();
         if (attendeeEmails != null) {
@@ -77,11 +82,11 @@ public class EventCreator {
                 event.setAttendees(eventAttendees);
             }
         }
-        DateTime endDateTime = new DateTime(dateString + "T09:15:00-07:00");
+        DateTime endDateTime = new DateTime(dateString + "T"+getEndTime()+getTimeZoneOffset());
 
         EventDateTime end = new EventDateTime()
                 .setDateTime(endDateTime)
-                .setTimeZone("America/Los_Angeles");
+                .setTimeZone(getTimeZone());
         event.setEnd(end);
          
        
@@ -157,8 +162,108 @@ public class EventCreator {
     /**
      * @return the oAuth2RestTemplate
      */
-    public OAuth2RestTemplate getoAuth2RestTemplate() {
+    private OAuth2RestTemplate getoAuth2RestTemplate() {
         return oAuth2RestTemplate;
+    }
+
+    /**
+     * @return the timeZone
+     */
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    /**
+     * @param timeZone the timeZone to set
+     */
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    /**
+     * @return the timeZoneOffset
+     */
+    public String getTimeZoneOffset() {
+        return timeZoneOffset;
+    }
+
+    /**
+     * @param timeZoneOffset the timeZoneOffset to set
+     */
+    public void setTimeZoneOffset(String timeZoneOffset) {
+        this.timeZoneOffset = timeZoneOffset;
+    }
+
+    /**
+     * @return the summary
+     */
+    public String getSummary() {
+        return summary;
+    }
+
+    /**
+     * @param summary the summary to set
+     */
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    /**
+     * @return the location
+     */
+    public String getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+   
+
+    /**
+     * @return the startTime
+     */
+    public String getStartTime() {
+        return startTime;
+    }
+
+    /**
+     * @param startTime the startTime to set
+     */
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    /**
+     * @return the endTime
+     */
+    public String getEndTime() {
+        return endTime;
+    }
+
+    /**
+     * @param endTime the endTime to set
+     */
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
 }

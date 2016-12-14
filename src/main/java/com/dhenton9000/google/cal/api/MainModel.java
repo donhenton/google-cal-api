@@ -23,7 +23,7 @@ public class MainModel {
 
     public Properties getProperties() {
         Properties replacementProps = new Properties();
-        replacementProps.setProperty("ATTENDEES", getFirstAttendee()
+        replacementProps.setProperty("ATTENDEES_FIELD", getFirstAttendee()
                 +","+getSecondAttendee());         
         replacementProps.setProperty("DATE_FIELD", getDateField());
         replacementProps.setProperty("TEXT_FIELD",  getText());

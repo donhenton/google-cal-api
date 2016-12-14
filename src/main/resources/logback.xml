@@ -2,7 +2,7 @@
 
 
 <configuration  debug="true">
- <contextName>logback-test</contextName>
+    <contextName>logback-test</contextName>
     <property name="logback.home" value="." />
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -26,18 +26,20 @@
     <logger name="org.thymeleaf">
         <level value="ERROR"/>
     </logger>
-
+    <logger name="org.docx4j">
+        <level value="ERROR"/>
+    </logger>
     
     <logger name="freemarker.cache">
         <level value="ERROR"/>
     </logger>
-      <logger name="springfox">
+    <logger name="springfox">
         <level value="ERROR"/>
     </logger>
-     <logger name="ch.qos.logback">
+    <logger name="ch.qos.logback">
         <level value="ERROR"/>
     </logger>
-     <logger name="org.hibernate">
+    <logger name="org.hibernate">
         <level value="ERROR"/>
     </logger>
 
