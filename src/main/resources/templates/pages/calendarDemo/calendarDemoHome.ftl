@@ -17,7 +17,7 @@
 
 
 
-    <form  method="POST" action="/mainDemoPost" class="form well">
+    <form  method="POST" action="/calendarDemoPost" class="form well">
 
 
         <table class="table" >
@@ -74,6 +74,6 @@
         </form>
 
     </div>
-
+<div class="column50Right">Fill out the form to the left to create the google calendar meeting. The input values will appear in the Word document that is attached as the agenda. </div>
 
 <#include "../../common/footer.ftl">

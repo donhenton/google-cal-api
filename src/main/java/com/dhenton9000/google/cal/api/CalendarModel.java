@@ -11,7 +11,7 @@ import java.util.Properties;
  *
  * @author dhenton
  */
-public class MainModel {
+public class CalendarModel {
 
     private String firstAttendee = "donhenton@gmail.com";
     private String secondAttendee = "ddigital9000@gmail.com";

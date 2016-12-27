@@ -23,7 +23,7 @@
 
 
                     <ul>
-                        <li><a href="/mainDemo">Main Demo</a></li>
+                        <li><a href="/calendarDemo">Calendar Demo</a></li>
                         <li>
                             
                             <aside>File API</aside>

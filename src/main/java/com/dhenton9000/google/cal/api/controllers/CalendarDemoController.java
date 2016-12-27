@@ -6,7 +6,7 @@
 package com.dhenton9000.google.cal.api.controllers;
 
 import com.dhenton9000.google.cal.api.EventCreator;
-import com.dhenton9000.google.cal.api.MainModel;
+import com.dhenton9000.google.cal.api.CalendarModel;
 import com.dhenton9000.google.drive.FileReturnInfo;
 import com.dhenton9000.google.drive.GoogleDriveWriter;
 import com.dhenton9000.google.drive.TemplateGenerator;
@@ -37,31 +37,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class MainDemoController {
+public class CalendarDemoController {
 
     @Autowired
     OAuth2RestTemplate oAuth2RestTemplate;
 
-    private static final Logger LOG = LoggerFactory.getLogger(MainDemoController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CalendarDemoController.class);
     private static final String TEMPLATE_PATH = "/docx_templates/main_template.docx";
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
-    @RequestMapping("/mainDemo")
-    public ModelAndView mainDemoHome(ModelAndView model) {
+    @RequestMapping("/calendarDemo")
+    public ModelAndView calendarDemoHome(ModelAndView model) {
 
         Date d = new Date();
-        MainModel mModel = new MainModel();
+        CalendarModel mModel = new CalendarModel();
         String initialDate = EventCreator.INPUT_DATE_FORMAT.format(d);
         mModel.setDateField(initialDate);
-        model.addObject("appTitle", "Main Demonstration");
+        model.addObject("appTitle", "Calendar Invitation Demo");
         model.addObject("mainModel", mModel);
-        model.setViewName("pages/mainDemo/mainDemoHome");
+        model.setViewName("pages/calendarDemo/calendarDemoHome");
         return model;
 
     }
 
-    @RequestMapping(path = "/mainDemoPost", method = RequestMethod.POST)
-    public ModelAndView mainDemoPost(@ModelAttribute("mainModel") MainModel apptModel, 
+    @RequestMapping(path = "/calendarDemoPost", method = RequestMethod.POST)
+    public ModelAndView mainDemoPost(@ModelAttribute("calenderModel") CalendarModel apptModel, 
             BindingResult result, ModelAndView model) {
 
         //http://stackoverflow.com/questions/21102071/resttemplate-upload-image-file
