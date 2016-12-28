@@ -1,6 +1,7 @@
 <#include "../common/header.ftl">
 
- 
+
+
 
 <div class="column50Left">
     <h3>User Details</h3>

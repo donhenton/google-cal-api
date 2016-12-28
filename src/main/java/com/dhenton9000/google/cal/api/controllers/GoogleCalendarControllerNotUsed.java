@@ -31,7 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author dhenton
  */
 @Controller
-public class GoogleCalendarController {
+public class GoogleCalendarControllerNotUsed {
 
     @Autowired
     OAuth2RestTemplate oAuth2RestTemplate;
@@ -47,7 +47,7 @@ public class GoogleCalendarController {
 
 
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-    private static final Logger LOG = LoggerFactory.getLogger(GoogleCalendarController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GoogleCalendarControllerNotUsed.class);
 
     @RequestMapping(value = "/googleAction", method = {RequestMethod.POST})
     public ModelAndView googleAction(Principal principal, @RequestParam("dateString") String dateString, ModelAndView model) {

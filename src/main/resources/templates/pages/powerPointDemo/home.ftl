@@ -10,6 +10,7 @@
                 <td><div id="horizontalMain"></div></td>
                 <td><button id="updateHorizontalData" class="pull-right btn btn-primary">Update Data</button> 
                  <p>&nbsp;</p>
+                 <span id="loader" class="loading"></span>
                  <button onClick="doPPTDownload()" id="downloadPowerPoint" class="pull-right btn btn-primary">Download PPT</button></td>
             </tr>
         </table>
