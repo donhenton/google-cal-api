@@ -191,50 +191,7 @@ public class TemplateGenerator {
             }
         });
 
-        //LOG.debug(String.format("link ct %d location %s anchor %s",hyperLinkList.size(),link.getDocLocation(),link.getAnchor()));
-        //link.setDocLocation(url);
-        //link.setAnchor(url);
-        //link.setTooltip("clink to see the data");
-    }
-/*
-    public static void zzzzzzmthing(String[] args) throws Exception {
-
-        TemplateGenerator gen = new TemplateGenerator();
-        LocalDate ld = LocalDate.now();
-        String dateField = ld.format(DateTimeFormatter.ISO_LOCAL_DATE);
-
-        String textField = "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. "
-                + "this is stuff to add. this is stuff to add. ";
-
-        Properties replacementProps = new Properties();
-        replacementProps.setProperty("TO_FIELD", "ddigital9000@gmail.com");
-        replacementProps.setProperty("FROM_FIELD", "donhenton@gmail.com");
-        replacementProps.setProperty("DATE_FIELD", dateField);
-        replacementProps.setProperty("TEXT_FIELD", textField);
-        replacementProps.setProperty("HYPERLINK_HREF", "http://www.yahoo.com");
-        replacementProps.setProperty("HYPERLINK_TEXT", "My cool link");
-
-        String fileLocation = System.getProperty("user.dir") + "/docs/output.docx";
-        gen.replaceToFile(replacementProps, "/templates/demo_template.docx", fileLocation);
 
     }
-*/
+
 }
