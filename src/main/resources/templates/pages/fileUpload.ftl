@@ -70,6 +70,7 @@
         <h3>Result</h3>
         <p>&nbsp;</p>
         <textarea id="result">${result}</textarea>
+        <p>This demo will create a file on the users google drive that is a preliminary demo of agenda creation</p>
         </div>
 
 
