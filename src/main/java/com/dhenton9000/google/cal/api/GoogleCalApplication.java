@@ -29,6 +29,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+ 
 
 @SpringBootApplication
 @RestController
@@ -36,6 +37,9 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableOAuth2Sso
 public class GoogleCalApplication extends WebSecurityConfigurerAdapter {
 
+    //this is session scoped so every user gets his own access token
+    //EnableOauth2Sso set this up
+    
     @Autowired
     OAuth2ClientContext oauth2ClientContext;
 
@@ -45,6 +49,9 @@ public class GoogleCalApplication extends WebSecurityConfigurerAdapter {
         map.put("name", principal.getName());
         return map;
     }
+    
+ 
+    
 
     /**
      * configure security
@@ -78,6 +85,7 @@ public class GoogleCalApplication extends WebSecurityConfigurerAdapter {
 
     @Bean
     //@Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES) ????
+    // not needed as client context is session scoped
     //see https://jhasaket.blogspot.com/2014/09/securing-spring-mvc-application-using.html
     public OAuth2RestTemplate getRestClient() {
 

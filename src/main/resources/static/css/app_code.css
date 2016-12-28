@@ -30,3 +30,12 @@ ul.listing {
     margin-top: 15px;
     margin-bottom: 5px;
 }
+
+.loading {
+  background: url("img/ajax-loader.gif") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+  display: inline-block;
+  visibility: hidden;
+  height: 40px;
+  margin-right: 5px;
+  width: 30px;
+}
