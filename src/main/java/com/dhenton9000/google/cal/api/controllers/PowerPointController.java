@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.dhenton9000.google.cal.api.controllers;
 
 import com.dhenton9000.docx4j.D3GraphBatikTransCoder;
@@ -58,7 +53,7 @@ public class PowerPointController {
             InputStream isImage = tCoder.getDocument();
             PowerPointGenerator gen = new PowerPointGenerator();
             ServletOutputStream outstream = response.getOutputStream();
-            gen.generate(mappings, isImage, outstream, "jpg",75.0f);
+            gen.generate(mappings, isImage, outstream,75.0f);
             
         } catch (Exception ex) {
             throw 

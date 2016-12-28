@@ -18,6 +18,7 @@ import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
+import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +58,6 @@ public class D3GraphBatikTransCoder {
 
     /**
      * 
-     * @param svgString the svg as a string, it should not have the ns defined;
      * @return a byte[] that contains the jpeg data.
      * @throws Exception 
      */
@@ -74,9 +74,9 @@ public class D3GraphBatikTransCoder {
         Dimension d = new Dimension(width,height);
         LOG.debug("dim is "+d);
 
-        JPEGTranscoder t = new JPEGTranscoder();
-        t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY,
-                new Float(.9));
+        PNGTranscoder t = new PNGTranscoder();
+       // t.addTranscodingHint(PNGTranscoder.,
+       //         new Float(.9));
 
         // Set the transcoder input and output.
         TranscoderInput input = new TranscoderInput(document);
