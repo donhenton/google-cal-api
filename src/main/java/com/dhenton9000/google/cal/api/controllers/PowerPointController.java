@@ -5,8 +5,8 @@
  */
 package com.dhenton9000.google.cal.api.controllers;
 
-import com.dhenton9000.docx4j.sandbox.D3GraphBatikTransCoder;
-import com.dhenton9000.docx4j.sandbox.PowerPointGenerator;
+import com.dhenton9000.docx4j.D3GraphBatikTransCoder;
+import com.dhenton9000.docx4j.PowerPointGenerator;
 import java.io.InputStream;
 import java.util.HashMap;
 import javax.servlet.ServletOutputStream;

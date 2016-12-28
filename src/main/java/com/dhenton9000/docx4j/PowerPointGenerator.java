@@ -1,4 +1,4 @@
-package com.dhenton9000.docx4j.sandbox;
+package com.dhenton9000.docx4j;
 
 import com.dhenton9000.xml.utils.OffsetAdjuster;
 import com.dhenton9000.xml.utils.XmlUtilities;
