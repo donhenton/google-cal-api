@@ -1,4 +1,21 @@
- 
+
+
+
+$(document).ready(
+        function () {
+
+
+            var frm = $('#pptxForm');
+            frm.submit(function (ev) {
+                 doPPTDownload();
+                ev.preventDefault();
+            });
+
+
+
+
+        });
+
 
 /* global basePath, csrfToken */
 /* defined on page via java */
@@ -6,22 +23,29 @@
 function doPPTDownload()
 {
     //basePath is global via freemaker and the controller see PowerPointController
+
     var fullPath = basePath + "/pptDownload";
     var xhr = new XMLHttpRequest();
     xhr.open('POST', fullPath, true); //to the download servlet
-  
-    var dataToSend = $('svg').parent().html();
-    $('#loader').css({"visibility":"visible"});
+
+    var dataObj = {};
+    dataObj['svgData'] = $('svg').parent().html();
+    dataObj['imageTitle'] = $('#imageTitle').val();
+    dataObj['imageSubTitle'] = $('#imageSubTitle').val();
+    var dataToSend = JSON.stringify(dataObj);
+    console.log(dataToSend);
+    
+    $('#loader').css({"visibility": "visible"});
     xhr.responseType = 'arraybuffer';
-    xhr.addEventListener("loadend", function()
+    xhr.addEventListener("loadend", function ()
     {
-         $('#loader').css({"visibility":"hidden"})
+        $('#loader').css({"visibility": "hidden"})
     })
-    xhr.addEventListener("onerror", function(event)
+    xhr.addEventListener("onerror", function (event)
     {
         window.alert(JSON.stringify(event));
     })
-    xhr.onerror = function(ev)
+    xhr.onerror = function (ev)
     {
         window.alert(JSON.stringify(ev));
     }
@@ -36,7 +60,7 @@ function doPPTDownload()
                     filename = matches[1].replace(/['"]/g, '');
             }
             var type = xhr.getResponseHeader('Content-Type');
-            var a  = null;
+            var a = null;
             var blob = new Blob([this.response], {type: type});
             if (typeof window.navigator.msSaveBlob !== 'undefined') {
                 // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
@@ -48,7 +72,7 @@ function doPPTDownload()
                 if (filename) {
                     // use HTML5 a[download] attribute to specify filename
                     a = document.createElement("a");
-                    a.setAttribute("id","downLoadLink")
+                    a.setAttribute("id", "downLoadLink")
                     // safari doesn't support this yet
                     if (typeof a.download === 'undefined') {
                         window.location = downloadUrl;
@@ -68,15 +92,14 @@ function doPPTDownload()
                     console.log("timeout clean up called");
                 }, 100); // cleanup
             }
-        }
-        else
+        } else
         {
-            window.alert(" error status "+this.status);
+            window.alert(" error status " + this.status);
         }
     };
-   // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.setRequestHeader('Content-Type', 'image/svg+xml');
-    xhr.setRequestHeader("X-XSRF-TOKEN",csrfToken);
+     xhr.setRequestHeader('Content-Type', 'application/json');
+   // xhr.setRequestHeader('Content-Type', 'image/svg+xml');
+    xhr.setRequestHeader("X-XSRF-TOKEN", csrfToken);
     xhr.send(dataToSend);
 
 //application/vnd.openxmlformats-officedocument.presentationml.presentation

@@ -27,7 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class PowerPointController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GoogleCalendarControllerNotUsed.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PowerPointController.class);
 
     @RequestMapping(value = "/powerPointGraph", method = {RequestMethod.GET})
     public ModelAndView powerPointMainPage(ModelAndView model, HttpServletRequest request) {
@@ -41,21 +41,20 @@ public class PowerPointController {
     }
 
     @RequestMapping(value = "/pptDownload", method = {RequestMethod.POST})
-    public void powerPointDownload(@RequestBody String svgInput, HttpServletResponse response) {
+    public void powerPointDownload(@RequestBody SVGForm svgForm, HttpServletResponse response) {
 
         response.setContentType("application/vnd.openxmlformats-officedocument.presentationml.presentation");
         response.addHeader("content-disposition", "attachment; filename=presentation.pptx");
 
-    
+        LOG.debug(svgForm.toString());
 
         HashMap<String, String> mappings = new HashMap<String, String>();
-        mappings.put("MAIN_TITLE", "DON'T GET A JOB!!!!!");
-        mappings.put("SUB_TITLE", "Hang out at Bob's!!!!!");
-        mappings.put("IMAGE_TITLE", "Meet the New Boss");
-        mappings.put("IMAGE_TEXT", "Same as the Old Boss");
+       
+        mappings.put("IMAGE_TITLE", svgForm.getImageTitle());
+        mappings.put("IMAGE_TEXT", svgForm.getImageSubTitle());
         try {
             
-            D3GraphBatikTransCoder tCoder = new D3GraphBatikTransCoder(svgInput);
+            D3GraphBatikTransCoder tCoder = new D3GraphBatikTransCoder(svgForm.getSvgData());
             InputStream isImage = tCoder.getDocument();
             PowerPointGenerator gen = new PowerPointGenerator();
             ServletOutputStream outstream = response.getOutputStream();

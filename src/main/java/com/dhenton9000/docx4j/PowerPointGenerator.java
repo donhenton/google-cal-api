@@ -3,7 +3,6 @@ package com.dhenton9000.docx4j;
 import com.dhenton9000.xml.utils.OffsetAdjuster;
 import com.dhenton9000.xml.utils.XmlUtilities;
 import java.awt.Dimension;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
