@@ -23,6 +23,7 @@
 
 
                     <ul>
+                        <li><a href="/powerPointGraph">PowerPoint Demo</a></li>
                         <li><a href="/calendarDemo">Calendar Demo</a></li>
                         <li>
                             
