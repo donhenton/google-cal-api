@@ -135,7 +135,7 @@ public class CalendarDemoController {
         LOG.debug("res\n"+res);
         model.addObject("appTitle", "Main Demonstration");
         model.addObject("result",res);
-        model.setViewName("pages/mainDemo/mainResult");
+        model.setViewName("pages/calendarDemo/calendarResult");
         return model;
 
     }
