@@ -33,7 +33,7 @@ function doPPTDownload()
     dataObj['imageTitle'] = $('#imageTitle').val();
     dataObj['imageSubTitle'] = $('#imageSubTitle').val();
     var dataToSend = JSON.stringify(dataObj);
-    console.log(dataToSend);
+    //console.log(dataToSend);
     
     $('#loader').css({"visibility": "visible"});
     xhr.responseType = 'arraybuffer';
@@ -89,8 +89,8 @@ function doPPTDownload()
                 setTimeout(function () {
                     URL.revokeObjectURL(downloadUrl);
                     $('a#downLoadLink').remove();
-                    console.log("timeout clean up called");
-                }, 100); // cleanup
+                   // console.log("timeout clean up called");
+                }, 2000); // cleanup
             }
         } else
         {
