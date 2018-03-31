@@ -29,7 +29,7 @@ properties provided by heroku, along with server.port=$PORT
 heroku login
 heroku deploy:jar target/google-cal-api-0.0.1-SNAPSHOT.jar --app google-cal-api
 ```
-URL: http://google-cal-api.herokuapp.com/
+URL: http://google-cal-api.herokuapp.com/ (application is not deployed at this time)
 
 ## Redirect Urls to set in the API manager 
 
