@@ -22,7 +22,7 @@ google.resource.prefer-token-info=false
 ```
 
 In production the client-id and the client-secret will come in via system
-properties provided by heroku, along with server.port=$PORT
+properties provided by heroku, along with server.port. The port setting is provided by heroku and gets to this app via command line overrides in the Procfile.
 
 ## Deploy To Heroku
 ```
