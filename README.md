@@ -42,3 +42,4 @@ http://google-cal-api.herokuapp.com/login/google
 https://google-cal-api.herokuapp.com/login/google
 ```
 
+https://developers.google.com/identity/protocols/OAuth2

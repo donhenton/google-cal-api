@@ -9,7 +9,7 @@
             <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <run.mainClass>com.example.Google-cal-apApplication</run.mainClass>
+            <spring-boot.run.mainClass>com.example.Google-cal-apApplication</spring-boot.run.mainClass>
         </properties>
     </action>
     <action>
@@ -21,8 +21,8 @@
             <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <run.jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</run.jvmArguments>
-            <run.mainClass>com.example.Google-cal-apApplication</run.mainClass>
+            <spring-boot.run.jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</spring-boot.run.jvmArguments>
+            <spring-boot.run.mainClass>com.example.Google-cal-apApplication</spring-boot.run.mainClass>
             <jpda.listen>true</jpda.listen>
         </properties>
     </action>
