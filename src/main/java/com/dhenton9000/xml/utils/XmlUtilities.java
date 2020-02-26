@@ -30,6 +30,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
@@ -40,8 +42,7 @@ import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.apache.log4j.Logger;
-import org.apache.log4j.LogManager;
+
 import org.w3c.dom.ls.LSResourceResolver;
 
 /**
@@ -52,7 +53,7 @@ public final class XmlUtilities {
 
     public static final String DEFAULT_ENCODING = "UTF-8";
     private static final int BUFFER_SIZE = 1024;
-    private static final Logger logger = LogManager.getLogger(XmlUtilities.class);
+    private static final Logger logger = LoggerFactory.getLogger(XmlUtilities.class);
 
     /**
      * This function will add a node to parentNode, with the name nodeName and
